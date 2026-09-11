@@ -14,7 +14,7 @@
     "binding": "ASSETS",
     "not_found_handling": "404-page",
     "html_handling": "auto-trailing-slash",
-    "run_worker_first": ["/demo/*", "/intake/*"]
+    "run_worker_first": ["/demo/*", "/intake/*", "/enquiry"]
   },
   "d1_databases": [
     { "binding": "DB", "database_name": "firstdraft-platform", "database_id": "aa31c4cd-cb8a-405d-a846-868c6eea295c" }

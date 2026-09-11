@@ -228,6 +228,24 @@ body.lock{overflow:hidden}
 .ask input{flex:1;min-width:220px;font:inherit;font-size:1rem;padding:15px 18px;border-radius:12px;border:0;background:#fff;color:var(--ink)}
 .ask input::placeholder{color:var(--mute)}
 .ask .fine{font-family:var(--mono);font-size:.76rem;color:rgba(255,255,255,.5);margin-top:16px;letter-spacing:.04em;position:relative}
+.ask .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.ask .step1{display:flex;gap:10px;flex-wrap:wrap}
+.ask .step1 input{flex:1;min-width:220px}
+.ask .step2{margin-top:18px;display:grid;gap:14px}
+.ask .step2 label{display:block;font-size:.9rem;font-weight:600;color:rgba(255,255,255,.9)}
+.ask .step2 label span{font-weight:400;color:rgba(255,255,255,.55)}
+.ask .step2 input,.ask .step2 textarea{width:100%;margin-top:6px;font:inherit;font-size:1rem;padding:14px 16px;border-radius:12px;border:0;background:#fff;color:var(--ink);min-height:52px}
+.ask .step2 textarea{min-height:88px;resize:vertical;line-height:1.5}
+.ask .step2 #askLinks input+input{margin-top:8px}
+.ask .f2{display:grid;gap:14px}
+@media(min-width:640px){.ask .f2{grid-template-columns:1fr 1fr}}
+.ask .addlink{margin-top:8px;font:inherit;font-size:.85rem;font-weight:600;color:#fff;background:rgba(255,255,255,.14);border:0;border-radius:9px;padding:9px 14px;cursor:pointer;min-height:40px}
+.ask .addlink:hover{background:rgba(255,255,255,.22)}
+.ask .btn.wide{width:100%;justify-content:center;min-height:56px}
+@media(min-width:640px){.ask .btn.wide{width:auto;min-width:300px}}
+.ask .err{color:#FFB3C0;font-size:.9rem;margin:0}
+.ask .thanks{position:relative;background:rgba(63,179,155,.16);border:1px solid rgba(63,179,155,.45);border-radius:14px;padding:20px 22px;margin-top:18px;color:#fff;font-size:1.05rem}
+@media(pointer:coarse){.ask .step2 input,.ask .step2 textarea{font-size:16px}}
 @media(max-width:700px){.ask{padding-bottom:70px}.ask .box{padding:40px 24px;border-radius:22px}}
 
 footer{padding:34px 0 44px;border-top:1px solid var(--hair)}
@@ -407,12 +425,41 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
   <div class="wrap">
     <div class="box rv">
       <span class="eyebrow">Start here</span>
-      <h2>Type your business name. That's the whole form.</h2>
-      <p>We'll reply within one business day, and you'll be looking at your first draft within the week.</p>
-      <form id="askForm">
-        <input type="text" id="biz" placeholder="Your business name" autocomplete="organization" required>
-        <button class="btn hot" type="submit">Send me a free draft <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <h2 id="askH">Start with your business name.</h2>
+      <p id="askP">Then thirty seconds of detail so we know where to look. We reply within one business day, and you are looking at a draft within the week.</p>
+      <form id="askForm" novalidate>
+        <div class="hp"><label>Company<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
+        <input type="hidden" name="t" id="askT">
+
+        <div class="step1">
+          <input type="text" name="name" id="biz" placeholder="Your business name" autocomplete="organization" required>
+          <button class="btn hot" type="button" id="askNext">Get my free draft <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </div>
+
+        <div class="step2" id="askMore" hidden>
+          <div class="f2">
+            <label>Your name<input type="text" name="person" autocomplete="name" placeholder="Who we should ask for"></label>
+            <label>Town or city<input type="text" name="city" autocomplete="address-level2" placeholder="Where you are"></label>
+          </div>
+          <div class="f2">
+            <label>Email<input type="email" name="email" autocomplete="email" placeholder="Where we send the draft"></label>
+            <label>Phone <span>if you would rather we call</span><input type="tel" name="phone" autocomplete="tel" placeholder="Optional"></label>
+          </div>
+          <label>What you do<input type="text" name="what" placeholder="Diner, barbershop, plumber, dental clinic"></label>
+          <label>Your website and socials <span>paste anything you have, one per line</span>
+            <div id="askLinks">
+              <input type="url" name="links" placeholder="facebook.com/yourshop">
+              <input type="url" name="links" placeholder="instagram.com/yourshop">
+            </div>
+            <button type="button" class="addlink" id="askAdd">Add another link</button>
+          </label>
+          <label>Anything we should know <span>optional</span>
+            <textarea name="notes" rows="3" placeholder="What you sell, what makes you different, what you would want on the page, anything you hate about your current site."></textarea></label>
+          <button class="btn hot wide" type="submit" id="askSend">Send this to First Draft Studios <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          <p class="err" id="askErr" hidden></p>
+        </div>
       </form>
+      <div class="thanks" id="askThanks" hidden></div>
       <div class="fine">no deposit &middot; no contract &middot; no sales calls unless you want one</div>
     </div>
   </div>
@@ -465,13 +512,53 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
   }else{els.forEach(function(el){el.classList.add('in')})}
 
   /* ---- the one-field form: opens a prefilled email ---- */
-  document.getElementById('askForm').addEventListener('submit',function(e){
-    e.preventDefault();
-    var name=document.getElementById('biz').value.trim()||'my business';
-    var s=encodeURIComponent('Free draft for '+name);
-    var b=encodeURIComponent('Hi FirstDraft,\n\nI\'d like a free first draft for '+name+'.\n\nWebsite / app / video / brand (delete what doesn\'t apply)\nAnything you should know: \n\nThanks,\n');
-    location.href='mailto:brandonpottie@gmail.com?subject='+s+'&body='+b;
-  });
+  (function(){
+    var form=document.getElementById('askForm'), more=document.getElementById('askMore'),
+        next=document.getElementById('askNext'), biz=document.getElementById('biz'),
+        err=document.getElementById('askErr'), thanks=document.getElementById('askThanks'),
+        h=document.getElementById('askH'), p=document.getElementById('askP'),
+        links=document.getElementById('askLinks'), add=document.getElementById('askAdd'),
+        send=document.getElementById('askSend'), t=document.getElementById('askT');
+    if(!form) return;
+    t.value=Date.now();
+
+    function reveal(){
+      if(!biz.value.trim()){ biz.focus(); biz.placeholder='We need the name first'; return; }
+      more.hidden=false; next.hidden=true;
+      h.textContent='Thanks. Where do we find '+biz.value.trim()+'?';
+      p.textContent='All of this helps us build something that looks like you rather than a template. Only one way to reach you is required.';
+      var first=more.querySelector('input'); if(first) first.focus();
+    }
+    next.addEventListener('click',reveal);
+    biz.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); reveal(); } });
+
+    add.addEventListener('click',function(){
+      if(links.querySelectorAll('input').length>=6) return;
+      var i=document.createElement('input'); i.type='url'; i.name='links'; i.placeholder='Another link';
+      links.appendChild(i); i.focus();
+    });
+
+    form.addEventListener('submit',function(e){
+      e.preventDefault();
+      if(more.hidden){ reveal(); return; }
+      var fd=new FormData(form);
+      if(!(fd.get('email')||'').trim() && !(fd.get('phone')||'').trim()){
+        err.textContent='Leave us an email or a phone number so we can send you the draft.'; err.hidden=false; return;
+      }
+      err.hidden=true; send.disabled=true; send.textContent='Sending...';
+      fetch('/enquiry',{method:'POST',body:fd})
+        .then(function(r){return r.json();})
+        .then(function(j){
+          if(!j.ok) throw new Error(j.message||'That did not send.');
+          form.hidden=true; thanks.textContent=j.message; thanks.hidden=false;
+          h.textContent='That is everything we need.'; p.textContent='We read every one of these ourselves.';
+        })
+        .catch(function(x){
+          send.disabled=false; send.innerHTML='Send this to First Draft Studios';
+          err.textContent=x.message+' You can also email hello@firstdraftstudios.ca.'; err.hidden=false;
+        });
+    });
+  })();
   document.getElementById('yr').textContent=new Date().getFullYear();
 })();
 </script>

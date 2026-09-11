@@ -4,11 +4,14 @@
 import { injectBanner } from './banner.js';
 import { handleReply } from './reply.js';
 import { handleIntake } from './intake.js';
+import { handleEnquiry } from './enquiry.js';
 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+    // Someone asking for a free draft from the studio site. Public by design.
+    if (url.pathname === '/enquiry') return handleEnquiry(request, env);
     // The narrow door for scheduled Claude routines.
     if (url.pathname.startsWith('/intake/')) return handleIntake(request, env, url);
 
