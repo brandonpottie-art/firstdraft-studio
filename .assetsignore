@@ -3,6 +3,6 @@
 .wrangler
 .assetsignore
 wrangler.jsonc
-CNAME
 .nojekyll
 node_modules
+src
