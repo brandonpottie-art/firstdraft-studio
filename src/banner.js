@@ -25,7 +25,7 @@ export function injectBanner(html, { name, slug, email, site, phone, kit, hasDem
 #fd-bar{position:fixed;top:0;left:0;right:0;z-index:2147483000;background:#15173A;color:#fff;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;font-size:14px;line-height:1.35;
   display:flex;align-items:center;gap:10px;padding:9px 12px;box-shadow:0 1px 0 rgba(0,0,0,.22)}
-#fd-bar .fd-dot{flex:none;width:9px;height:9px;background:#5E63E0;border-radius:2px;transform:rotate(45deg)}
+#fd-bar .fd-dot{flex:none;width:26px;height:26px;border-radius:7px;display:block}
 #fd-bar .fd-txt{flex:1 1 auto;min-width:0;color:#fff;font-weight:500}
 #fd-bar .fd-txt b{color:#fff;font-weight:700}
 #fd-bar .fd-txt .fd-long{color:rgba(255,255,255,.72)}
@@ -61,6 +61,7 @@ html.fd-hidden #fd-bar{display:none}
 #fd-end{background:#15173A;color:#EEF0F7;padding:48px 20px 56px;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;line-height:1.55}
 #fd-end .fd-in{max-width:720px;margin:0 auto}
+#fd-end .fd-logo{height:30px;width:auto;display:block;margin:0 0 16px}
 #fd-end .fd-kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#9EA2F2;margin:0 0 12px;font-weight:700}
 #fd-end h2{font-size:clamp(24px,5vw,38px);line-height:1.1;color:#fff;margin:0 0 14px;font-weight:800;letter-spacing:-.02em}
 #fd-end p{color:rgba(238,240,247,.82);margin:0 0 12px;font-size:16px;max-width:60ch}
@@ -121,7 +122,7 @@ html.fd-hidden #fd-bar{display:none}
 
   const bar = `
 <div id="fd-bar" role="complementary" aria-label="First Draft Studios">
-  <i class="fd-dot" aria-hidden="true"></i>
+  <img class="fd-dot" src="https://firstdraftstudios.ca/assets/apple-touch-icon.png" alt="" width="26" height="26">
   <span class="fd-txt"><b>${kit ? `Three free posts ${who}.` : `A free first draft ${who}.`}</b> <span class="fd-long">${kit ? 'Yours to keep and use, no charge, as thanks for taking a look.' : 'Made by First Draft Studios. Everything on it can be changed to suit you.'}</span></span>
   ${sw('fd-sw')}
   <a class="fd-cta" href="#fd-end">${kit ? 'About the website' : 'Make it real'}</a>
@@ -132,7 +133,7 @@ ${both ? sw('fd-swm') : ''}`;
   const end = `
 <section id="fd-end">
   <div class="fd-in">
-    <p class="fd-kicker">From First Draft Studios, Windsor</p>
+    <img class="fd-logo" src="https://firstdraftstudios.ca/assets/logo-light.png" alt="First Draft Studios" width="447" height="120">
     <h2>${kit ? 'These three posts are yours to keep.' : 'Want this to be your real website?'}</h2>
     ${kit
       ? `<p><b style="color:#fff">Post them whenever you like, at no charge, whether or not we ever work together.</b> They are our thanks for taking the time to look. Save the pictures, copy the captions, and they are yours.</p>
@@ -181,7 +182,7 @@ ${both ? sw('fd-swm') : ''}`;
         <label class="fd-f"><span>Email we should reply to</span><input type="email" name="email" autocomplete="email"></label>
         <label class="fd-f"><span>Phone, if you would rather we call</span><input type="tel" name="phone" autocomplete="tel"></label>
         <label class="fd-f"><span>Anything you want changed, added, or taken off</span><textarea name="message" placeholder="The photos are old, the hours are wrong, we do not sell that any more, we want a page for catering."></textarea></label>
-        <p class="fd-cheap">On price: we are a small studio in Windsor with almost no overhead, so what we charge tends to surprise people who have shopped around. You will see the exact number in writing before anything starts, and nothing begins until you agree to it.</p>
+        <p class="fd-cheap">On price: we are a small studio with almost no overhead, so what we charge tends to surprise people who have shopped around. You will see the exact number in writing before anything starts, and nothing begins until you agree to it.</p>
       </div>
 
       <div class="fd-panel" id="fd-later">

@@ -3,6 +3,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>First Draft Studios</title>
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta property="og:image" content="https://firstdraftstudios.ca/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:title" content="First Draft Studios">
+<meta property="og:description" content="We build your website first and show it to you working. You pay only if you want it finished, at one fixed price.">
+<meta property="og:url" content="https://firstdraftstudios.ca/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="description" content="First Draft Studios builds your website, app, or video first and shows it to you working. You pay only if you want it finished, at one fixed price.">
 <meta name="theme-color" content="#EEF0F7">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -54,8 +65,9 @@ p{max-width:62ch}
 header{position:fixed;inset:0 0 auto 0;z-index:90;height:72px;display:flex;align-items:center;transition:background .3s,box-shadow .3s,height .3s}
 header.on{background:rgba(238,240,247,.8);backdrop-filter:saturate(160%) blur(16px);-webkit-backdrop-filter:saturate(160%) blur(16px);box-shadow:0 1px 0 var(--hair);height:60px}
 header .wrap{width:100%;display:flex;align-items:center;justify-content:space-between;gap:20px}
-.mark{font-family:var(--display);font-weight:800;font-size:1.3rem;color:var(--ink);letter-spacing:-.03em;display:flex;align-items:center;gap:9px}
-.mark i{width:12px;height:12px;background:var(--tang);border-radius:3px;transform:rotate(45deg)}
+.mark{display:flex;align-items:center}
+.mark img{height:32px;width:auto;display:block}
+@media(min-width:700px){.mark img{height:42px}}
 nav{display:flex;gap:26px;font-weight:600;font-size:.92rem;color:var(--slate)}
 nav a{padding:4px 0;border-bottom:2px solid transparent;transition:border-color .2s,color .2s}
 nav a:hover{color:var(--ink);border-color:var(--tang)}
@@ -265,7 +277,7 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
 
 <header id="hdr">
   <div class="wrap">
-    <a class="mark" href="#top"><i aria-hidden="true"></i>FirstDraft</a>
+    <a class="mark" href="#top" aria-label="First Draft Studios, home"><img src="/assets/logo.png" alt="First Draft Studios" width="447" height="120"></a>
     <nav aria-label="Primary">
       <a href="#deal">The deal</a>
       <a href="#how">How it works</a>
