@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>First Draft Studios</title>
-<meta name="description" content="FirstDraft builds your website, app, or video first and shows it to you working. You pay only if you want it finished, at one fixed price. Windsor, Ontario.">
+<meta name="description" content="First Draft Studios builds your website, app, or video first and shows it to you working. You pay only if you want it finished, at one fixed price.">
 <meta name="theme-color" content="#EEF0F7">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
@@ -25,6 +25,7 @@
   --lift:0 34px 80px rgba(26,27,46,.16),0 10px 24px rgba(26,27,46,.08);
 }
 *{margin:0;padding:0;box-sizing:border-box}
+[hidden]{display:none!important}
 html{scroll-behavior:smooth}
 body{font-family:var(--body);background:var(--ground);color:var(--slate);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
@@ -229,23 +230,25 @@ body.lock{overflow:hidden}
 .ask input::placeholder{color:var(--mute)}
 .ask .fine{font-family:var(--mono);font-size:.76rem;color:rgba(255,255,255,.5);margin-top:16px;letter-spacing:.04em;position:relative}
 .ask .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-.ask .step1{display:flex;gap:10px;flex-wrap:wrap}
-.ask .step1 input{flex:1;min-width:220px}
-.ask .step2{margin-top:18px;display:grid;gap:14px}
-.ask .step2 label{display:block;font-size:.9rem;font-weight:600;color:rgba(255,255,255,.9)}
-.ask .step2 label span{font-weight:400;color:rgba(255,255,255,.55)}
-.ask .step2 input,.ask .step2 textarea{width:100%;margin-top:6px;font:inherit;font-size:1rem;padding:14px 16px;border-radius:12px;border:0;background:#fff;color:var(--ink);min-height:52px}
-.ask .step2 textarea{min-height:88px;resize:vertical;line-height:1.5}
-.ask .step2 #askLinks input+input{margin-top:8px}
-.ask .f2{display:grid;gap:14px}
-@media(min-width:640px){.ask .f2{grid-template-columns:1fr 1fr}}
-.ask .addlink{margin-top:8px;font:inherit;font-size:.85rem;font-weight:600;color:#fff;background:rgba(255,255,255,.14);border:0;border-radius:9px;padding:9px 14px;cursor:pointer;min-height:40px}
+.ask .getbox{position:relative;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:16px;padding:22px 24px;margin:24px 0 8px}
+.ask .getbox b{display:block;color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:10px}
+.ask .getbox ul{margin:0;padding:0 0 0 20px;color:rgba(255,255,255,.84);font-size:1rem}
+.ask .getbox li{padding:4px 0}
+.ask .getbox p{margin:12px 0 0;color:rgba(255,255,255,.66);font-size:.94rem}
+.ask .fields{position:relative;display:grid;gap:16px;margin-top:24px}
+@media(min-width:680px){.ask .fields{grid-template-columns:1fr 1fr}.ask .fields .wide{grid-column:1 / -1}}
+.ask .fields label{display:block;font-size:.92rem;font-weight:600;color:rgba(255,255,255,.92)}
+.ask .fields label span{font-weight:400;color:rgba(255,255,255,.55)}
+.ask .fields label em{font-style:normal;font-weight:600;color:#9EA2F2;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;margin-left:6px}
+.ask .fields input,.ask .fields textarea{width:100%;margin-top:7px;font:inherit;font-size:16px;padding:14px 16px;border-radius:12px;border:0;background:#fff;color:var(--ink);min-height:54px}
+.ask .fields textarea{min-height:92px;resize:vertical;line-height:1.5}
+.ask #askLinks input+input{margin-top:8px}
+.ask .addlink{margin-top:10px;font:inherit;font-size:.85rem;font-weight:600;color:#fff;background:rgba(255,255,255,.14);border:0;border-radius:9px;padding:10px 15px;cursor:pointer;min-height:42px}
 .ask .addlink:hover{background:rgba(255,255,255,.22)}
-.ask .btn.wide{width:100%;justify-content:center;min-height:56px}
-@media(min-width:640px){.ask .btn.wide{width:auto;min-width:300px}}
-.ask .err{color:#FFB3C0;font-size:.9rem;margin:0}
-.ask .thanks{position:relative;background:rgba(63,179,155,.16);border:1px solid rgba(63,179,155,.45);border-radius:14px;padding:20px 22px;margin-top:18px;color:#fff;font-size:1.05rem}
-@media(pointer:coarse){.ask .step2 input,.ask .step2 textarea{font-size:16px}}
+.ask .btn.wide{position:relative;width:100%;justify-content:center;min-height:58px;margin-top:22px;font-size:1.02rem}
+@media(min-width:680px){.ask .btn.wide{width:auto;min-width:340px}}
+.ask .err{position:relative;color:#FFB3C0;font-size:.92rem;margin:12px 0 0}
+.ask .thanks{position:relative;background:rgba(63,179,155,.16);border:1px solid rgba(63,179,155,.45);border-radius:14px;padding:22px 24px;margin-top:18px;color:#fff;font-size:1.05rem;line-height:1.55}
 @media(max-width:700px){.ask{padding-bottom:70px}.ask .box{padding:40px 24px;border-radius:22px}}
 
 footer{padding:34px 0 44px;border-top:1px solid var(--hair)}
@@ -285,7 +288,7 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
   <div class="wrap">
     <div class="top">
       <div>
-        <span class="eyebrow">Windsor, Ontario &middot; websites, apps, video, brand</span>
+        <span class="eyebrow">Websites &middot; apps &middot; video &middot; brand</span>
         <h1>See your new website <em>before</em> you pay for it.</h1>
       </div>
       <div>
@@ -342,7 +345,7 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
         <div class="ln"><span><b>Changes to the draft</b><small>Tear it apart or ask for a different direction. One more free swing if it's a miss.</small></span><span class="amt">$0</span></div>
         <div class="ln"><span><b>Walking away</b><small>No kill fee, no invoice, no follow-up calls.</small></span><span class="amt">$0</span></div>
         <div class="ln total"><b>Cost to see your website</b><span class="amt">$0</span></div>
-        <div class="ln yes"><span><b>If you say yes</b><small>One written quote before any money moves. We finish the draft, hand over every file, and you own all of it.</small></span><span class="amt"><span>Fixed price</span>quoted with the draft</span></div>
+        <div class="ln yes"><span><b>If you say yes</b><small>One written quote before any money moves. We finish the draft, put it live, and look after it from there.</small></span><span class="amt"><span>Fixed price</span>quoted with the draft</span></div>
       </div>
     </div>
   </div>
@@ -366,7 +369,7 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
     <h2 class="rv" data-d="1">Built for businesses that hadn't asked yet.</h2>
     <p class="rv" data-d="2" style="font-size:1.12rem;margin-top:14px">Each of these started the same way yours would: a business name, an afternoon, a link. No brief, no deposit, no meeting.</p>
     <div class="thumbs">
-      <a class="thumb rv" data-d="1" href="#ask"><div class="scr t1"><div class="k">Cut to order, <span>since 1995.</span></div><div class="r"><i></i><i></i><i></i></div><div class="p"><span>Weekly cuts</span><span>Order ahead</span><span>Dominion Blvd</span></div></div><div class="meta"><b>Family butcher, South Windsor</b><span>draft &middot; 1 afternoon</span></div></a>
+      <a class="thumb rv" data-d="1" href="#ask"><div class="scr t1"><div class="k">Cut to order, <span>since 1995.</span></div><div class="r"><i></i><i></i><i></i></div><div class="p"><span>Weekly cuts</span><span>Order ahead</span><span>Dominion Blvd</span></div></div><div class="meta"><b>Family butcher</b><span>draft &middot; 1 afternoon</span></div></a>
       <a class="thumb rv" data-d="2" href="#ask"><div class="scr t2"><div class="k">Sharp cuts. <span>No waiting.</span></div><div class="lst"><div><span>Men's cut</span><i>$25</i></div><div><span>Hair &amp; beard</span><i>$40</i></div><div><span>Kids</span><i>$20</i></div><div><span>Hot towel shave</span><i>$25</i></div></div><div class="pole"></div></div><div class="meta"><b>Barbershop, Riverside</b><span>draft &middot; 1 afternoon</span></div></a>
       <a class="thumb rv" data-d="3" href="#ask"><div class="scr t3"><div class="k">Same-day <span>emergency visits.</span></div><div class="c"><i></i><i></i><i></i><i></i></div><div class="btn3">Book online</div></div><div class="meta"><b>Dental clinic, Tecumseh</b><span>draft &middot; 1 afternoon</span></div></a>
     </div>
@@ -398,9 +401,9 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
     <div class="card rv">
       <div class="who" aria-hidden="true"><i></i></div>
       <div>
-        <p>We're a small studio in Windsor. We've shipped apps to the App Store, built sites that people actually use, and watched too many good local businesses get quoted five figures for a website by people who never walked through their door.</p>
+        <p>We are a small studio. We have shipped apps to the App Store, built sites that people actually use, and watched too many good local businesses get quoted five figures for a website by someone who never set foot in the place.</p>
         <p>So the order is reversed. We build it first. You look at it on your phone, on your own time, and you decide with the thing in front of you. If it isn't right, we shake hands and you've lost nothing. If it is, you'll know the exact price before a dollar moves.</p>
-        <div class="sig">FIRST DRAFT STUDIOS &middot; WINDSOR, ON</div>
+        <div class="sig">FIRST DRAFT STUDIOS</div>
       </div>
     </div>
   </div>
@@ -416,7 +419,7 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
       <details><summary>What happens if I don't like it?<i>+</i></summary><p>Tell us. Either we take one more free swing in a different direction, or we part ways. There is no invoice, no kill fee, and no pressure. The draft stays ours; your business stays yours.</p></details>
       <details><summary>How much does the finished version cost?<i>+</i></summary><p>It depends on the project, and you'll know the exact number before committing. Every quote is fixed and in writing. Because we run a small studio with modern tools and no account managers, the number is consistently well under agency rates for the same work.</p></details>
       <details><summary>What does it cost to keep it running?<i>+</i></summary><p>Very little. Your domain name is about $15 a year. Hosting for a site like the ones above is free. Email at your own domain can be free too. We set it all up in your name so nothing depends on us.</p></details>
-      <details><summary>Who owns the finished work?<i>+</i></summary><p>You do. Source files, code, domain, accounts, everything. No hosting lock-in and no licensing scheme that rents you your own website.</p></details>
+      <details><summary>Am I tied into anything?<i>+</i></summary><p>No contract and no minimum term. The build is one fixed price, quoted in writing before we start. If you take a care plan afterwards it is month to month, and you can stop it whenever you like.</p></details>
     </div>
   </div>
 </section>
@@ -425,39 +428,48 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
   <div class="wrap">
     <div class="box rv">
       <span class="eyebrow">Start here</span>
-      <h2 id="askH">Start with your business name.</h2>
-      <p id="askP">Then thirty seconds of detail so we know where to look. We reply within one business day, and you are looking at a draft within the week.</p>
+      <h2 id="askH">Tell us where to look.</h2>
+      <p id="askP">A minute of detail is all we need. Everything except the business name and one way to reach you is optional.</p>
+
+      <div class="getbox">
+        <b>What lands in your inbox</b>
+        <ul>
+          <li>A working first draft of your website, built for your business, on a link you can open on your phone.</li>
+          <li>Three social posts made for you, with the captions and hashtags written.</li>
+          <li>One fixed price if you want it finished, in writing, with no obligation to take it.</li>
+        </ul>
+        <p>We will not ask for a credit card and we will not add you to a mailing list. If you say no thanks, that is the end of it.</p>
+      </div>
+
       <form id="askForm" novalidate>
         <div class="hp"><label>Company<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
         <input type="hidden" name="t" id="askT">
 
-        <div class="step1">
-          <input type="text" name="name" id="biz" placeholder="Your business name" autocomplete="organization" required>
-          <button class="btn hot" type="button" id="askNext">Get my free draft <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-        </div>
-
-        <div class="step2" id="askMore" hidden>
-          <div class="f2">
-            <label>Your name<input type="text" name="person" autocomplete="name" placeholder="Who we should ask for"></label>
-            <label>Town or city<input type="text" name="city" autocomplete="address-level2" placeholder="Where you are"></label>
-          </div>
-          <div class="f2">
-            <label>Email<input type="email" name="email" autocomplete="email" placeholder="Where we send the draft"></label>
-            <label>Phone <span>if you would rather we call</span><input type="tel" name="phone" autocomplete="tel" placeholder="Optional"></label>
-          </div>
-          <label>What you do<input type="text" name="what" placeholder="Diner, barbershop, plumber, dental clinic"></label>
-          <label>Your website and socials <span>paste anything you have, one per line</span>
+        <div class="fields">
+          <label class="wide">Business name <em>required</em>
+            <input type="text" name="name" id="biz" placeholder="What it says on the sign" autocomplete="organization" required></label>
+          <label>Your name
+            <input type="text" name="person" autocomplete="name" placeholder="Who we should ask for"></label>
+          <label>Town or city
+            <input type="text" name="city" autocomplete="address-level2" placeholder="Where you are"></label>
+          <label>Email <em>this or a phone number</em>
+            <input type="email" name="email" autocomplete="email" placeholder="Where we send the draft"></label>
+          <label>Phone <span>if you would rather we call</span>
+            <input type="tel" name="phone" autocomplete="tel" placeholder="Optional"></label>
+          <label class="wide">What you do
+            <input type="text" name="what" placeholder="Diner, barbershop, plumber, dental clinic"></label>
+          <label class="wide">Your website and socials <span>paste whatever you have</span>
             <div id="askLinks">
               <input type="url" name="links" placeholder="facebook.com/yourshop">
               <input type="url" name="links" placeholder="instagram.com/yourshop">
             </div>
-            <button type="button" class="addlink" id="askAdd">Add another link</button>
-          </label>
-          <label>Anything we should know <span>optional</span>
+            <button type="button" class="addlink" id="askAdd">Add another link</button></label>
+          <label class="wide">Anything we should know <span>optional</span>
             <textarea name="notes" rows="3" placeholder="What you sell, what makes you different, what you would want on the page, anything you hate about your current site."></textarea></label>
-          <button class="btn hot wide" type="submit" id="askSend">Send this to First Draft Studios <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-          <p class="err" id="askErr" hidden></p>
         </div>
+
+        <button class="btn hot wide" type="submit" id="askSend">Send this and get my free draft <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        <p class="err" id="askErr" hidden></p>
       </form>
       <div class="thanks" id="askThanks" hidden></div>
       <div class="fine">no deposit &middot; no contract &middot; no sales calls unless you want one</div>
@@ -469,7 +481,7 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
 
 <footer>
   <div class="wrap">
-    <span>&copy; <span id="yr">2026</span> First Draft Studios &middot; Windsor, Ontario &middot; working anywhere</span>
+    <span>&copy; <span id="yr">2026</span> First Draft Studios</span>
     <span class="tag">v0 is free. v1 is yours.</span>
   </div>
 </footer>
@@ -513,24 +525,13 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
 
   /* ---- the one-field form: opens a prefilled email ---- */
   (function(){
-    var form=document.getElementById('askForm'), more=document.getElementById('askMore'),
-        next=document.getElementById('askNext'), biz=document.getElementById('biz'),
-        err=document.getElementById('askErr'), thanks=document.getElementById('askThanks'),
-        h=document.getElementById('askH'), p=document.getElementById('askP'),
-        links=document.getElementById('askLinks'), add=document.getElementById('askAdd'),
-        send=document.getElementById('askSend'), t=document.getElementById('askT');
+    var form=document.getElementById('askForm'), err=document.getElementById('askErr'),
+        thanks=document.getElementById('askThanks'), h=document.getElementById('askH'),
+        p=document.getElementById('askP'), links=document.getElementById('askLinks'),
+        add=document.getElementById('askAdd'), send=document.getElementById('askSend'),
+        t=document.getElementById('askT');
     if(!form) return;
     t.value=Date.now();
-
-    function reveal(){
-      if(!biz.value.trim()){ biz.focus(); biz.placeholder='We need the name first'; return; }
-      more.hidden=false; next.hidden=true;
-      h.textContent='Thanks. Where do we find '+biz.value.trim()+'?';
-      p.textContent='All of this helps us build something that looks like you rather than a template. Only one way to reach you is required.';
-      var first=more.querySelector('input'); if(first) first.focus();
-    }
-    next.addEventListener('click',reveal);
-    biz.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); reveal(); } });
 
     add.addEventListener('click',function(){
       if(links.querySelectorAll('input').length>=6) return;
@@ -538,24 +539,30 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
       links.appendChild(i); i.focus();
     });
 
+    function fail(msg,field){
+      err.textContent=msg; err.hidden=false;
+      if(field){ var el=form.querySelector('[name="'+field+'"]'); if(el){ el.focus(); el.scrollIntoView({block:'center',behavior:'smooth'}); } }
+    }
+
     form.addEventListener('submit',function(e){
       e.preventDefault();
-      if(more.hidden){ reveal(); return; }
       var fd=new FormData(form);
-      if(!(fd.get('email')||'').trim() && !(fd.get('phone')||'').trim()){
-        err.textContent='Leave us an email or a phone number so we can send you the draft.'; err.hidden=false; return;
-      }
+      if(!(fd.get('name')||'').trim()) return fail('We need the business name to get started.','name');
+      if(!(fd.get('email')||'').trim() && !(fd.get('phone')||'').trim())
+        return fail('Leave us an email or a phone number so we can send you the draft.','email');
       err.hidden=true; send.disabled=true; send.textContent='Sending...';
       fetch('/enquiry',{method:'POST',body:fd})
         .then(function(r){return r.json();})
         .then(function(j){
           if(!j.ok) throw new Error(j.message||'That did not send.');
-          form.hidden=true; thanks.textContent=j.message; thanks.hidden=false;
-          h.textContent='That is everything we need.'; p.textContent='We read every one of these ourselves.';
+          form.hidden=true; document.querySelector('.ask .getbox').hidden=true;
+          thanks.textContent=j.message; thanks.hidden=false;
+          h.textContent='That is everything we need.';
+          p.textContent='We read every one of these ourselves. Watch your inbox.';
         })
         .catch(function(x){
-          send.disabled=false; send.innerHTML='Send this to First Draft Studios';
-          err.textContent=x.message+' You can also email hello@firstdraftstudios.ca.'; err.hidden=false;
+          send.disabled=false; send.innerHTML='Send this and get my free draft';
+          fail(x.message+' You can also email hello@firstdraftstudios.ca.');
         });
     });
   })();

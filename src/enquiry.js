@@ -34,8 +34,8 @@ export async function handleEnquiry(request, env) {
   const instagram = pick(/instagram\.com/i);
   const site = links.find(u => !/facebook|instagram|tiktok|linkedin|x\.com|twitter|youtube/i.test(u)) || null;
 
-  const already = await env.DB.prepare('SELECT id FROM leads WHERE lower(name) = lower(?1)').bind(name).first()
-    || await env.DB.prepare('SELECT id FROM businesses WHERE lower(name) = lower(?1)').bind(name).first();
+  // They asked us, so they are a client from the start, not a speculative lead.
+  const existing = await env.DB.prepare('SELECT id, name FROM businesses WHERE lower(name) = lower(?1)').bind(name).first();
 
   const fit = [
     'They came to us. Asked for a free draft through the studio site' + (city ? ` from ${city}` : '') + '.',
@@ -44,26 +44,62 @@ export async function handleEnquiry(request, env) {
     notes ? `In their words: "${notes}"` : ''
   ].filter(Boolean).join(' ');
 
-  const stmts = [];
-  let leadId = null;
-  if (!already) {
+  let id = existing ? existing.id : null;
+  if (!id) {
+    const slug = await uniqueSlug(env, name);
     const r = await env.DB.prepare(
-      `INSERT INTO leads (name, category, city, phone, website, facebook, instagram, fit, source, created_by)
-       VALUES (?1,?2,?3,?4,?5,?6,?7,?8,'asked us','Their enquiry')`
-    ).bind(name, what, city, phone, site, facebook, instagram, fit).run();
-    leadId = r.meta.last_row_id;
+      `INSERT INTO businesses (slug, name, category, city, phone, website, source, stage, brief, alive_at, created_by)
+       VALUES (?1,?2,?3,?4,?5,?6,'asked us','new',?7,date('now'),'Their enquiry')`
+    ).bind(slug, name, what, city, phone, site, fit).run();
+    id = r.meta.last_row_id;
   }
 
   const who = person ? `${person} at ${name}` : name;
-  stmts.push(env.DB.prepare("INSERT INTO activities (business_id, type, summary, actor) VALUES (NULL, 'lead', ?1, 'Their enquiry')")
-    .bind(`${who} asked for a free draft through the website. ${email ? email : ''}${email && phone ? ' · ' : ''}${phone || ''}`.trim()));
-  stmts.push(env.DB.prepare("INSERT INTO tasks (business_id, title, due, kind, created_by) VALUES (NULL, ?1, date('now'), 'enquiry', 'Their enquiry')")
-    .bind(`Reply to ${who}, they asked for a draft${email ? ' (' + email + ')' : phone ? ' (' + phone + ')' : ''}`));
+  const stmts = [
+    env.DB.prepare(`INSERT INTO contacts (business_id, name, role, email, phone, facebook, instagram, preferred_channel, casl_basis, created_by)
+       VALUES (?1,?2,'got in touch',?3,?4,?5,?6,?7,'asked us to contact them','Their enquiry')`)
+      .bind(id, person, email, phone, facebook, instagram, email ? 'email' : 'phone'),
+    env.DB.prepare("INSERT INTO activities (business_id, type, summary, actor) VALUES (?1, 'enquiry', ?2, 'Their enquiry')")
+      .bind(id, `${who} asked for a free draft through the website. ${[email, phone].filter(Boolean).join(' · ')}`.trim()),
+    env.DB.prepare("INSERT INTO tasks (business_id, title, due, kind, created_by) VALUES (?1, ?2, date('now'), 'enquiry', 'Their enquiry')")
+      .bind(id, `Reply to ${who} today, they asked us for a draft`)
+  ];
+  if (notes) stmts.push(env.DB.prepare("INSERT INTO notes (business_id, body, pinned, author) VALUES (?1, ?2, 1, 'Their enquiry')")
+    .bind(id, `What they told us when they wrote in:\n\n${notes}`));
+  for (const u of links) stmts.push(env.DB.prepare("INSERT INTO notes (business_id, body, pinned, author) VALUES (?1, ?2, 0, 'Their enquiry')").bind(id, `Link they gave us: ${u}`));
+
+  // Put the research in front of Claude straight away.
+  const brief = [
+    `# Research request: ${name}`, '',
+    'This business asked us for a free draft through the studio site, so they are',
+    'expecting to hear back within one business day. Research them, then build the',
+    'v0 package. Use the firstdraft-research and firstdraft-web-design skills.', '',
+    '## What they told us',
+    `- Business: ${name}`,
+    person ? `- Person: ${person}` : '',
+    city ? `- Where: ${city}` : '',
+    what ? `- What they do: ${what}` : '',
+    email ? `- Email: ${email}` : '',
+    phone ? `- Phone: ${phone}` : '',
+    links.length ? `- Links they gave: ${links.join(', ')}` : '- They gave no links',
+    notes ? `- In their words: "${notes}"` : '', '',
+    'Proof of life is already established: they wrote to us. Go straight to the',
+    'menu or service list, prices, hours, reviews, their own words, and photos.'
+  ].filter(Boolean).join('\n');
+  stmts.push(env.DB.prepare("INSERT INTO jobs (business_id, type, brief, queued_by) VALUES (?1, 'research', ?2, 'Their enquiry')").bind(id, brief));
+
   await env.DB.batch(stmts);
 
-  return json({ ok: true, message: person ? `Thanks ${person}. We will write back within one business day.` : 'Thanks. We will write back within one business day.' });
+  return json({ ok: true, message: (person ? `Thanks ${person}. ` : 'Thanks. ')
+    + 'We have everything we need. You will get an email within one business day with a link to your first draft and three social posts made for you. No credit card, and we have not added you to anything.' });
 }
 
+async function uniqueSlug(env, name) {
+  const base = name.toLowerCase().replace(/['\u2019]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 48) || 'business';
+  let slug = base, n = 2;
+  while (await env.DB.prepare('SELECT 1 FROM businesses WHERE slug = ?1').bind(slug).first()) slug = `${base}-${n++}`;
+  return slug;
+}
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
 }
