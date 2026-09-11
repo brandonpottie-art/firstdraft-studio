@@ -9,7 +9,7 @@
     "STUDIO_PHONE": "",
     // Where a reply gets forwarded so it is in a mailbox as well as the
     // platform. Empty means no copy is sent.
-    "FORWARD_TO": ""
+    "FORWARD_TO": "hello@firstdraftstudios.ca"
   },
   "workers_dev": false,
   "assets": {
