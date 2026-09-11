@@ -3,6 +3,11 @@
   "name": "firstdraftstudios",
   "main": "src/index.js",
   "compatibility_date": "2026-09-01",
+  "vars": {
+    "STUDIO_EMAIL": "hello@firstdraftstudios.ca",
+    "STUDIO_SITE": "firstdraftstudios.ca",
+    "STUDIO_PHONE": ""
+  },
   "workers_dev": false,
   "assets": {
     "directory": ".",
@@ -11,6 +16,9 @@
     "html_handling": "auto-trailing-slash",
     "run_worker_first": ["/demo/*"]
   },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "firstdraft-platform", "database_id": "aa31c4cd-cb8a-405d-a846-868c6eea295c" }
+  ],
   "r2_buckets": [
     { "binding": "DEMOS", "bucket_name": "firstdraft-demos" }
   ],
