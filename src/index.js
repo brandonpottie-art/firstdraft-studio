@@ -3,10 +3,15 @@
 // through to the static site assets.
 import { injectBanner } from './banner.js';
 import { handleReply } from './reply.js';
+import { handleIntake } from './intake.js';
 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+
+    // The narrow door for scheduled Claude routines.
+    if (url.pathname.startsWith('/intake/')) return handleIntake(request, env, url);
+
     const m = url.pathname.match(/^\/demo\/([a-z0-9-]+)(?:\/([a-z0-9-]+))?\/?$/);
     if (!m) return env.ASSETS.fetch(request);
 
