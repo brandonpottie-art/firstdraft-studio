@@ -106,6 +106,12 @@ body.lock{overflow:hidden}
 .chip{position:absolute;top:16px;z-index:8;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;padding:7px 11px;border-radius:8px;pointer-events:none}
 .chip.b{left:16px;background:rgba(14,20,32,.82);color:#fff}
 .chip.a{right:16px;background:var(--teal);color:#fff}
+/* On a phone the two chips share one line and collide. Put "after" in the
+   opposite corner so they can never meet, whatever the text length. */
+@media(max-width:640px){
+  .chip{font-size:.66rem;padding:6px 9px;max-width:calc(100% - 32px);white-space:normal;line-height:1.3}
+  .chip.a{top:auto;bottom:16px}
+}
 .cmp-cap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:16px;font-size:.92rem;color:var(--mute)}
 .cmp-cap b{color:var(--ink);font-weight:600}
 .cmp-cap .drag{font-family:var(--mono);font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--tang);display:inline-flex;align-items:center;gap:8px}
@@ -255,7 +261,7 @@ body.lock{overflow:hidden}
 .ask .fields input,.ask .fields textarea{width:100%;margin-top:7px;font:inherit;font-size:16px;padding:14px 16px;border-radius:12px;border:0;background:#fff;color:var(--ink);min-height:54px}
 .ask .fields textarea{min-height:92px;resize:vertical;line-height:1.5}
 .ask #askLinks input+input{margin-top:8px}
-.ask .addlink{margin-top:10px;font:inherit;font-size:.85rem;font-weight:600;color:#fff;background:rgba(255,255,255,.14);border:0;border-radius:9px;padding:10px 15px;cursor:pointer;min-height:42px}
+.ask .addlink{margin-top:10px;font:inherit;font-size:.85rem;font-weight:600;color:#fff;background:rgba(255,255,255,.14);border:0;border-radius:9px;padding:10px 15px;cursor:pointer;min-height:44px}
 .ask .addlink:hover{background:rgba(255,255,255,.22)}
 .ask .btn.wide{position:relative;width:100%;justify-content:center;min-height:58px;margin-top:22px;font-size:1.02rem}
 @media(min-width:680px){.ask .btn.wide{width:auto;min-width:340px}}
@@ -273,6 +279,8 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
   .rv{opacity:1;transform:none;transition:none}
   .btn,.thumb,.knob{transition:none}
 }
+/* every tappable thing is 44px on a phone, the logo included */
+.mark{min-height:44px;display:inline-flex;align-items:center}
 </style>
 
 <header id="hdr">
