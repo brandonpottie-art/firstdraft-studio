@@ -10,9 +10,15 @@
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-export function injectBanner(html, { name, slug, email, site, phone, kit }) {
+export function injectBanner(html, { name, slug, email, site, phone, kit, hasDemo = true, hasKit = false }) {
   const who = name ? `for ${esc(name)}` : 'for your business';
   const tel = phone ? phone.replace(/[^\d+]/g, '') : '';
+  const both = hasDemo && hasKit;
+  const base = `/demo/${esc(slug)}/`;
+  const sw = id => both ? `<nav id="${id}" aria-label="Switch between your website and your posts">
+    <a href="${base}" class="${kit ? '' : 'on'}">Your website</a>
+    <a href="${base}kit/" class="${kit ? 'on' : ''}">Your posts <span class="fd-gift">FREE</span></a>
+  </nav>` : '';
 
   const css = `
 #fd-bar,#fd-bar *,#fd-end,#fd-end *{box-sizing:border-box}
@@ -35,6 +41,22 @@ export function injectBanner(html, { name, slug, email, site, phone, kit }) {
   #fd-bar a.fd-cta{padding:9px 12px;font-size:12.5px}
 }
 html.fd-hidden #fd-bar{display:none}
+#fd-sw{display:inline-flex;background:rgba(255,255,255,.12);border-radius:999px;padding:3px;gap:2px;flex:none}
+#fd-sw a{color:rgba(255,255,255,.8);text-decoration:none;font-weight:700;font-size:13px;padding:7px 13px;border-radius:999px;white-space:nowrap;min-height:34px;display:inline-flex;align-items:center;gap:6px}
+#fd-sw a.on{background:#fff;color:#15173A}
+#fd-sw a .fd-gift{font-size:11px;background:#3FB39B;color:#fff;border-radius:999px;padding:2px 7px;font-weight:800;letter-spacing:.04em}
+#fd-sw a.on .fd-gift{background:#3FB39B}
+@media(max-width:899px){
+  #fd-bar #fd-sw{display:none}
+  #fd-swm{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:2147483000;
+    background:#15173A;border-radius:999px;padding:4px;display:inline-flex;gap:2px;box-shadow:0 12px 30px rgba(21,23,58,.35);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+  #fd-swm a{color:rgba(255,255,255,.8);text-decoration:none;font-weight:700;font-size:14px;padding:11px 16px;border-radius:999px;white-space:nowrap;min-height:44px;display:inline-flex;align-items:center;gap:6px}
+  #fd-swm a.on{background:#fff;color:#15173A}
+  #fd-swm a .fd-gift{font-size:11px;background:#3FB39B;color:#fff;border-radius:999px;padding:2px 7px;font-weight:800}
+  body.fd-has-swm{padding-bottom:calc(84px + env(safe-area-inset-bottom)) !important}
+}
+@media(min-width:900px){#fd-swm{display:none}}
 
 #fd-end{background:#15173A;color:#EEF0F7;padding:48px 20px 56px;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;line-height:1.55}
@@ -100,19 +122,24 @@ html.fd-hidden #fd-bar{display:none}
   const bar = `
 <div id="fd-bar" role="complementary" aria-label="First Draft Studios">
   <i class="fd-dot" aria-hidden="true"></i>
-  <span class="fd-txt"><b>A free first draft ${who}.</b> <span class="fd-long">Made by First Draft Studios. Everything on it can be changed to suit you.</span></span>
-  <a class="fd-cta" href="#fd-end">Make it real</a>
+  <span class="fd-txt"><b>${kit ? `Three free posts ${who}.` : `A free first draft ${who}.`}</b> <span class="fd-long">${kit ? 'Yours to keep and use, no charge, as thanks for taking a look.' : 'Made by First Draft Studios. Everything on it can be changed to suit you.'}</span></span>
+  ${sw('fd-sw')}
+  <a class="fd-cta" href="#fd-end">${kit ? 'About the website' : 'Make it real'}</a>
   <button class="fd-x" type="button" aria-label="Hide this bar">&times;</button>
-</div>`;
+</div>
+${both ? sw('fd-swm') : ''}`;
 
   const end = `
 <section id="fd-end">
   <div class="fd-in">
     <p class="fd-kicker">From First Draft Studios, Windsor</p>
-    <h2>Want this to be your real ${kit ? 'social media' : 'website'}?</h2>
-    <p>We built ${kit ? 'these posts' : 'this page'} ${who} before you asked, at no cost and with no obligation.</p>
+    <h2>${kit ? 'These three posts are yours to keep.' : 'Want this to be your real website?'}</h2>
+    ${kit
+      ? `<p><b style="color:#fff">Post them whenever you like, at no charge, whether or not we ever work together.</b> They are our thanks for taking the time to look. Save the pictures, copy the captions, and they are yours.</p>
+         <p>We also built a draft of a new website ${who}. ${hasDemo ? `It is one tap away: <a href="${base}" style="color:#9EA2F2;font-weight:700">see the website draft</a>.` : ''}</p>`
+      : `<p>We built this page ${who} before you asked, at no cost and with no obligation.${hasKit ? ` We also made <a href="${base}kit/" style="color:#9EA2F2;font-weight:700">three social posts</a> you can keep and use for free, whatever you decide.` : ''}</p>`}
     <p><b style="color:#fff">This is a draft, so everything on it is still up for discussion.</b> We put it together from what we could find publicly: your ${kit ? 'photos, your reviews, and the way you already talk to customers' : 'menu, your hours, your reviews, and your photos'}. Every word, colour and picture is a suggestion you can change, replace, or throw out. Tell us what is wrong, what is missing, and what you would never say, and the next version will sound like you wrote it.</p>
-    <p>If you like the direction, we finish it, put it on your own web address, and give you one fixed price in writing before anything starts. If you would rather not, that is the end of it and you owe nothing.</p>
+    <p>${kit ? 'If you would like posts like these every month, or the website finished, we give you one fixed price in writing before anything starts.' : 'If you like the direction, we finish it, put it on your own web address, and give you one fixed price in writing before anything starts.'} If you would rather not, that is the end of it and you owe nothing.</p>
 
     <h3>Other things we can look after</h3>
     <ul class="fd-svc">
@@ -195,6 +222,7 @@ html.fd-hidden #fd-bar{display:none}
 <script>(function(){
   var d=document,h=d.documentElement,bar=d.getElementById('fd-bar');
   if(!bar)return;
+  if(d.getElementById('fd-swm')) d.body.className+=' fd-has-swm';
   var key='fd-hide-${esc(slug)}';
   try{ if(localStorage.getItem(key)==='1') h.className+=' fd-hidden'; }catch(e){}
   function pad(){

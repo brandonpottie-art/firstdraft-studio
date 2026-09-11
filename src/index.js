@@ -22,12 +22,17 @@ export default {
     const kit = sub === 'kit';
     if (sub && !kit) return notFound();
     const key = kit ? `${slug}/kit/index.html` : `${slug}/index.html`;
-    const obj = await env.DEMOS.get(key);
+    const [obj, other] = await Promise.all([
+      env.DEMOS.get(key),
+      env.DEMOS.head(kit ? `${slug}/index.html` : `${slug}/kit/index.html`)
+    ]);
     if (!obj) return notFound();
 
     const html = injectBanner(await obj.text(), {
-      name: obj.customMetadata?.name || '',
+      name: obj.customMetadata?.name || other?.customMetadata?.name || '',
       slug, kit,
+      hasDemo: kit ? !!other : true,
+      hasKit: kit ? true : !!other,
       email: env.STUDIO_EMAIL,
       site: env.STUDIO_SITE,
       phone: env.STUDIO_PHONE || ''
