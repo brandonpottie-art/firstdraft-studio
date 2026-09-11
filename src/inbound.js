@@ -119,26 +119,28 @@ const isFreeMail = d => FREE.has(d.toLowerCase());
 
 /* --------------------------------------------------- what Resend sends */
 
-// The webhook carries metadata; depending on the account the text may be in
-// the payload or may need fetching. Try the payload first, then the API, and
-// never fail the webhook over it.
+// The webhook carries metadata only: no body, no headers, no attachments.
+// The text has to be fetched, and the key needs full access to read it, so
+// this reports what went wrong rather than leaving a silent empty message.
 async function bodyOf(env, data) {
   const inline = data.text || data.plain || stripHtml(data.html);
   if (inline) return inline;
   const id = data.email_id || data.id;
-  if (!id || !env.RESEND_API_KEY) return null;
-  for (const path of [`emails/received/${id}`, `emails/${id}`]) {
-    try {
-      const res = await fetch(`https://api.resend.com/${path}`, {
-        headers: { authorization: `Bearer ${env.RESEND_API_KEY}` }
-      });
-      if (!res.ok) continue;
-      const full = await res.json();
-      const text = full.text || full.plain || stripHtml(full.html);
-      if (text) return text;
-    } catch { /* try the next one */ }
+  if (!id) return null;
+  if (!env.RESEND_API_KEY) return '(the body could not be fetched: no RESEND_API_KEY on the public Worker)';
+  try {
+    const res = await fetch(`https://api.resend.com/emails/receiving/${id}`, {
+      headers: { authorization: `Bearer ${env.RESEND_API_KEY}` }
+    });
+    if (!res.ok) {
+      const why = await res.text().catch(() => '');
+      return `(the body could not be fetched: Resend answered ${res.status}${res.status === 401 || res.status === 403 ? ', so the API key probably needs full access rather than sending access' : ''}. ${why.slice(0, 200)})`;
+    }
+    const full = await res.json();
+    return full.text || full.plain || stripHtml(full.html) || null;
+  } catch (err) {
+    return `(the body could not be fetched: ${err.message})`;
   }
-  return null;
 }
 
 function stripHtml(html) {
