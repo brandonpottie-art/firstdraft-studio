@@ -6,7 +6,10 @@
   "vars": {
     "STUDIO_EMAIL": "hello@firstdraftstudios.ca",
     "STUDIO_SITE": "firstdraftstudios.ca",
-    "STUDIO_PHONE": ""
+    "STUDIO_PHONE": "",
+    // Where a reply gets forwarded so it is in a mailbox as well as the
+    // platform. Empty means no copy is sent.
+    "FORWARD_TO": ""
   },
   "workers_dev": false,
   "assets": {

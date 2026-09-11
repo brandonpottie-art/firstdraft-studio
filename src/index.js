@@ -5,15 +5,21 @@ import { injectBanner } from './banner.js';
 import { handleReply } from './reply.js';
 import { handleIntake } from './intake.js';
 import { handleEnquiry } from './enquiry.js';
+import { handleTrack, recordView } from './track.js';
+import { handleInbound } from './inbound.js';
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
     // Someone asking for a free draft from the studio site. Public by design.
     if (url.pathname === '/enquiry') return handleEnquiry(request, env);
     // The narrow door for scheduled Claude routines.
     if (url.pathname.startsWith('/intake/')) return handleIntake(request, env, url);
+    // Opens and dwell time. Answers fast and writes afterwards.
+    if (url.pathname.startsWith('/t/')) return handleTrack(request, env, ctx, url);
+    // Mail coming back, posted by Resend and checked against the secret.
+    if (url.pathname === '/hooks/resend') return handleInbound(request, env);
 
     const m = url.pathname.match(/^\/demo\/([a-z0-9-]+)(?:\/([a-z0-9-]+))?\/?$/);
     if (!m) return env.ASSETS.fetch(request);
@@ -24,7 +30,7 @@ export default {
       return handleReply(request, env, m[1]);
     }
     if (!url.pathname.endsWith('/')) {
-      return Response.redirect(url.origin + url.pathname + '/', 301);
+      return Response.redirect(url.origin + url.pathname + '/' + url.search, 301);
     }
     const [, slug, sub] = m;
     const kit = sub === 'kit';
@@ -45,7 +51,12 @@ export default {
       site: env.STUDIO_SITE,
       phone: env.STUDIO_PHONE || ''
     });
-    return new Response(html, { headers: headers('text/html; charset=utf-8') });
+
+    // Counted server-side, so a visit registers with JavaScript off.
+    const cookies = recordView(env, ctx, request, url, { slug, page: kit ? 'kit' : 'demo' });
+    const res = new Response(html, { headers: headers('text/html; charset=utf-8') });
+    for (const c of cookies) res.headers.append('set-cookie', c);
+    return res;
   }
 };
 

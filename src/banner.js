@@ -287,6 +287,41 @@ ${both ? sw('fd-swm') : ''}`;
   });
 })();<\/script>`;
 
-  const blob = `<style>${css}</style>${bar}${end}${script}`;
+  // How long they stayed and how far down they read. The Worker already
+  // counted the visit when it served the page; this is the part that tells
+  // the difference between a glance and a read. Nothing identifying is sent:
+  // the slug, which page, seconds, and a scroll percentage.
+  const beacon = `
+<script>(function(){
+  var start=Date.now(), depth=0, gone=false, hidden=0, away=0;
+  function mark(){
+    var doc=document.documentElement, room=doc.scrollHeight-window.innerHeight;
+    var p=room>8?Math.round((window.pageYOffset||doc.scrollTop)/room*100):100;
+    if(p>depth) depth=Math.min(100,p);
+  }
+  function send(final){
+    if(gone&&final)return; if(final)gone=true;
+    var secs=Math.round((Date.now()-start-away)/1000);
+    if(secs<3&&!final)return;
+    var body=JSON.stringify({slug:'${esc(slug)}',page:'${kit ? 'kit' : 'demo'}',seconds:secs,depth:depth});
+    try{
+      if(final&&navigator.sendBeacon){ navigator.sendBeacon('/t/e',new Blob([body],{type:'application/json'})); return; }
+      fetch('/t/e',{method:'POST',body:body,headers:{'content-type':'application/json'},keepalive:!!final});
+    }catch(e){}
+  }
+  mark();
+  addEventListener('scroll',mark,{passive:true});
+  addEventListener('resize',mark,{passive:true});
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){ hidden=Date.now(); send(false); }
+    else if(hidden){ away+=Date.now()-hidden; hidden=0; }
+  });
+  setTimeout(function(){send(false);},20000);
+  setTimeout(function(){send(false);},75000);
+  addEventListener('pagehide',function(){send(true);});
+  addEventListener('beforeunload',function(){send(true);});
+})();<\/script>`;
+
+  const blob = `<style>${css}</style>${bar}${end}${script}${beacon}`;
   return html.includes('</body>') ? html.replace('</body>', blob + '</body>') : html + blob;
 }
