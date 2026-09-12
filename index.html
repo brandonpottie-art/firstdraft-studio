@@ -173,7 +173,10 @@ body.lock{overflow:hidden}
 .drafts p{color:rgba(255,255,255,.7)}
 .drafts .eyebrow{color:#9EA2F2}
 .drafts .rule{font-family:var(--mono);font-size:.78rem;color:rgba(255,255,255,.5);margin-top:22px;letter-spacing:.02em}
-.thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px;align-items:start}
+.thumbs{display:flex;gap:18px;margin-top:40px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;padding:4px 4px 18px;margin-left:-4px;margin-right:-4px;-webkit-overflow-scrolling:touch;scrollbar-color:rgba(255,255,255,.35) transparent}
+.thumbs::-webkit-scrollbar{height:8px}.thumbs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.3);border-radius:99px}
+.thumb{flex:0 0 min(78vw,400px);scroll-snap-align:start;padding:0;border:0;font:inherit;color:inherit;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.thumb:focus-visible{outline:3px solid #9EA2F2;outline-offset:3px}
 .thumb{border-radius:16px;overflow:hidden;background:var(--panel-2);box-shadow:0 0 0 1px rgba(255,255,255,.08);transition:transform .3s cubic-bezier(.2,.65,.25,1)}
 .thumb:hover{transform:translateY(-6px)}
 .thumb .scr{aspect-ratio:16/10;position:relative;overflow:hidden}
@@ -181,9 +184,21 @@ body.lock{overflow:hidden}
 .thumb .meta b{font-weight:600;color:#fff}
 .thumb .meta span{font-family:var(--mono);font-size:.72rem;color:rgba(255,255,255,.55);white-space:nowrap}
 .thumb .scr img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
-.thumb.lead{grid-column:span 2}
-.thumb .meta em{font-style:normal;color:#9EA2F2}
-div.thumb:hover{transform:none}
+.thumb .meta{min-height:44px}
+.drafts .hint{font-family:var(--mono);font-size:.78rem;color:rgba(255,255,255,.5);margin-top:6px;letter-spacing:.02em}
+/* the shadow box: the whole page, scrollable, closed by the button, the backdrop or Escape */
+.lb{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:16px}
+.lb[hidden]{display:none}
+.lb .bg{position:absolute;inset:0;background:rgba(21,23,58,.86);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.lb .box{position:relative;width:min(1000px,100%);height:min(92vh,100%);background:#fff;border-radius:18px;overflow:hidden;box-shadow:var(--lift);display:flex;flex-direction:column}
+.lb .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 10px 10px 18px;border-bottom:1px solid var(--hair);background:#fff}
+.lb .bar b{font-family:var(--display);font-weight:700;font-size:1.05rem;color:var(--ink);letter-spacing:-.01em;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb .bar a{font-size:.9rem;color:var(--tang);font-weight:600;white-space:nowrap;min-height:44px;display:inline-flex;align-items:center;padding:0 10px}
+.lb .x{flex:none;width:44px;height:44px;border:0;border-radius:12px;background:var(--ground);color:var(--ink);font-size:1.4rem;line-height:1;cursor:pointer;display:grid;place-items:center}
+.lb .x:hover{background:var(--tang-pale)}
+.lb .pane{flex:1;overflow:auto;overscroll-behavior:contain;background:#F3F4F9}
+.lb .pane img{display:block;width:100%;height:auto}
+@media(max-width:700px){.lb{padding:0}.lb .box{height:100%;border-radius:0}}
 .t3 .c i:nth-child(2)::after{background:#8FB6F2;width:36%}
 .t3 .btn3{position:absolute;left:7%;bottom:9%;background:#1F6FEB;color:#fff;font-size:clamp(6px,.85vw,10px);font-weight:700;padding:.7em 1.5em;border-radius:99px}
 @media(max-width:900px){.drafts{padding:70px 0}.thumbs{grid-template-columns:1fr}}
@@ -272,8 +287,6 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
 }
 /* every tappable thing is 44px on a phone, the logo included */
 .mark{min-height:44px;display:inline-flex;align-items:center}
-@media(max-width:900px){.thumbs{grid-template-columns:1fr 1fr}.thumb.lead{grid-column:1/-1}}
-@media(max-width:560px){.thumbs{grid-template-columns:1fr}.thumb.lead{grid-column:auto}}
 </style>
 
 <header id="hdr">
@@ -380,33 +393,41 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
 <section class="drafts" id="work">
   <div class="wrap">
     <span class="eyebrow rv">Work</span>
-    <h2 class="rv" data-d="1">Built first. Asked about after.</h2>
-    <p class="rv" data-d="2" style="font-size:1.12rem;margin-top:14px">Embrace is our own app, and the site that sells it. Every other one started the way yours would: a business name, an afternoon, and a link in the owner's inbox. A draft stays here while the owner is deciding and comes down the day they say no.</p>
-    <div class="thumbs">
-      <a class="thumb lead rv" data-d="1" href="https://www.embracehealthapp.com/" target="_blank" rel="noopener">
+    <h2 class="rv" data-d="1">Check out our work.</h2>
+    <p class="rv" data-d="2" style="font-size:1.12rem;margin-top:14px">Sites we have made for businesses around Windsor-Essex, and one app of our own. Tap any of them to see the whole page.</p>
+    <div class="thumbs" role="list">
+      <button class="thumb rv" data-d="1" type="button" role="listitem" data-full="/assets/work/embrace-full.jpg" data-name="Embrace" data-link="https://www.embracehealthapp.com/">
         <div class="scr"><img src="/assets/work/embrace.jpg" alt="The Embrace website: a headline reading Your family's health, organized, beside an iPhone running the app" width="960" height="600" loading="lazy"></div>
-        <div class="meta"><b>Embrace, a family health app</b><span><em>live</em> &middot; our own product</span></div>
-      </a>
-      <div class="thumb rv" data-d="2" data-slug="roast-n-toast-family-diner">
-        <div class="scr"><img src="/assets/work/roast.jpg" alt="Draft website for Roast 'N Toast Family Diner: Sit at the counter. Order the French toast, beside a drawn stack of French toast" width="960" height="600" loading="lazy"></div>
-        <div class="meta"><b>Roast 'N Toast Family Diner</b><span>draft &middot; with the owner</span></div>
-      </div>
-      <div class="thumb rv" data-d="1" data-slug="butcher-of-kingsville">
-        <div class="scr"><img src="/assets/work/butcher.jpg" alt="Draft website for The Butcher of Kingsville: One animal. Every cut. Nothing before day 28, beside a parcel in butcher's paper" width="960" height="600" loading="lazy"></div>
-        <div class="meta"><b>The Butcher of Kingsville</b><span>draft &middot; with the owner</span></div>
-      </div>
-      <div class="thumb rv" data-d="2" data-slug="a-dogs-breakfast">
-        <div class="scr"><img src="/assets/work/dogs.jpg" alt="Draft website for A Dog's Breakfast: Eight ways to have a benny, beside a photograph of a peameal benny with home fries" width="960" height="600" loading="lazy"></div>
-        <div class="meta"><b>A Dog's Breakfast</b><span>draft &middot; with the owner</span></div>
-      </div>
-      <div class="thumb rv" data-d="3" data-slug="jims-sub-shop-restaurant">
-        <div class="scr"><img src="/assets/work/jims.jpg" alt="Draft website for Jim's Sub Shop: Voted best breakfast in Windsor. Made with hollandaise, beside a chalkboard menu" width="960" height="600" loading="lazy"></div>
-        <div class="meta"><b>Jim's Sub Shop &amp; Restaurant</b><span>draft &middot; with the owner</span></div>
-      </div>
+        <div class="meta"><b>Embrace</b></div>
+      </button>
+      <button class="thumb rv" data-d="2" type="button" role="listitem" data-slug="roast-n-toast-family-diner" data-full="/assets/work/roast-full.jpg" data-name="Roast 'N Toast Family Diner">
+        <div class="scr"><img src="/assets/work/roast.jpg" alt="Website for Roast 'N Toast Family Diner: Sit at the counter. Order the French toast, beside a drawn stack of French toast" width="960" height="600" loading="lazy"></div>
+        <div class="meta"><b>Roast 'N Toast Family Diner</b></div>
+      </button>
+      <button class="thumb rv" data-d="3" type="button" role="listitem" data-slug="butcher-of-kingsville" data-full="/assets/work/butcher-full.jpg" data-name="The Butcher of Kingsville">
+        <div class="scr"><img src="/assets/work/butcher.jpg" alt="Website for The Butcher of Kingsville: One animal. Every cut. Nothing before day 28, beside a parcel in butcher's paper" width="960" height="600" loading="lazy"></div>
+        <div class="meta"><b>The Butcher of Kingsville</b></div>
+      </button>
+      <button class="thumb rv" data-d="3" type="button" role="listitem" data-slug="a-dogs-breakfast" data-full="/assets/work/dogs-full.jpg" data-name="A Dog's Breakfast">
+        <div class="scr"><img src="/assets/work/dogs.jpg" alt="Website for A Dog's Breakfast: Eight ways to have a benny, beside a photograph of a peameal benny with home fries" width="960" height="600" loading="lazy"></div>
+        <div class="meta"><b>A Dog's Breakfast</b></div>
+      </button>
+      <button class="thumb rv" data-d="3" type="button" role="listitem" data-slug="jims-sub-shop-restaurant" data-full="/assets/work/jims-full.jpg" data-name="Jim's Sub Shop &amp; Restaurant">
+        <div class="scr"><img src="/assets/work/jims.jpg" alt="Website for Jim's Sub Shop: Voted best breakfast in Windsor. Made with hollandaise, beside a chalkboard menu" width="960" height="600" loading="lazy"></div>
+        <div class="meta"><b>Jim's Sub Shop &amp; Restaurant</b></div>
+      </button>
     </div>
-    <p class="rule rv">Drafts are unlisted until the owner says yes, so they are shown here and not linked.</p>
+    <p class="hint rv">Scroll sideways for more.</p>
   </div>
 </section>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-labelledby="lbName">
+  <div class="bg" data-close></div>
+  <div class="box">
+    <div class="bar"><b id="lbName"></b><a id="lbLink" href="#" target="_blank" rel="noopener" hidden>Visit the site</a><button class="x" type="button" aria-label="Close" data-close>&times;</button></div>
+    <div class="pane" id="lbPane"><img id="lbImg" alt="" width="1000" height="600"></div>
+  </div>
+</div>
 
 <section class="build" id="build">
   <div class="wrap">
@@ -629,7 +650,8 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
 <script>
 (function(){
   if(!window.fetch)return;
-  fetch('/studio.json').then(function(r){return r.ok?r.json():null}).then(function(d){
+  /* no-store keeps the browser from holding an old list; the edge still caches it for five minutes */
+  fetch('/studio.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(d){
     if(!d)return;
     /* a draft comes down the day the owner says no, or the day it is unpublished */
     if(d.active){document.querySelectorAll('.thumb[data-slug]').forEach(function(c){if(d.active.indexOf(c.getAttribute('data-slug'))<0)c.remove()})}
@@ -639,5 +661,20 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
       var amt=ln&&ln.querySelector('.amt b'); if(amt)amt.textContent='$'+Number(p.price||0).toLocaleString('en-CA');
     })}
   }).catch(function(){});
+})();
+</script>
+<script>
+(function(){
+  var lb=document.getElementById('lb'),img=document.getElementById('lbImg'),name=document.getElementById('lbName'),link=document.getElementById('lbLink'),pane=document.getElementById('lbPane'),last=null;
+  function open(btn){
+    last=btn; name.textContent=btn.getAttribute('data-name')||''; img.alt='The whole '+name.textContent+' page';
+    img.src=btn.getAttribute('data-full'); pane.scrollTop=0;
+    var href=btn.getAttribute('data-link'); if(href){link.href=href;link.hidden=false}else{link.hidden=true}
+    lb.hidden=false; document.body.style.overflow='hidden'; lb.querySelector('.x').focus();
+  }
+  function close(){ lb.hidden=true; document.body.style.overflow=''; img.removeAttribute('src'); if(last)last.focus(); }
+  document.querySelectorAll('.thumb[data-full]').forEach(function(b){b.addEventListener('click',function(){open(b)})});
+  lb.querySelectorAll('[data-close]').forEach(function(e){e.addEventListener('click',close)});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!lb.hidden)close()});
 })();
 </script>
