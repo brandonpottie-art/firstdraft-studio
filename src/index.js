@@ -1,7 +1,7 @@
 // Serves prospect demos from R2 at /demo/<slug>[/kit], unlisted and noindex,
 // with the First Draft band injected at serve time. Everything else falls
 // through to the static site assets.
-import { injectBanner } from './banner.js';
+import { injectBanner, injectHead } from './banner.js';
 import { handleReply } from './reply.js';
 import { handleIntake } from './intake.js';
 import { handleEnquiry } from './enquiry.js';
@@ -20,6 +20,18 @@ export default {
     if (url.pathname.startsWith('/t/')) return handleTrack(request, env, ctx, url);
     // Mail coming back, posted by Resend and checked against the secret.
     if (url.pathname === '/hooks/resend') return handleInbound(request, env);
+
+    // The card image the og tags point at, served before anything that would
+    // add a trailing slash to it. Cached for an hour because it only changes
+    // when the draft is republished and unfurlers do not come back often.
+    const card = url.pathname.match(/^\/demo\/([a-z0-9-]+)\/og\.jpg$/);
+    if (card) {
+      const img = await env.DEMOS.get(`${card[1]}/og.jpg`);
+      if (!img) return notFound();
+      return new Response(img.body, {
+        headers: { 'content-type': 'image/jpeg', 'cache-control': 'public, max-age=3600', 'x-robots-tag': 'noindex' }
+      });
+    }
 
     const m = url.pathname.match(/^\/demo\/([a-z0-9-]+)(?:\/([a-z0-9-]+))?\/?$/);
     if (!m) return env.ASSETS.fetch(request);
@@ -42,7 +54,10 @@ export default {
     ]);
     if (!obj) return notFound();
 
-    const html = injectBanner(await obj.text(), {
+    const html = injectBanner(injectHead(await obj.text(), {
+      name: obj.customMetadata?.name || other?.customMetadata?.name || '',
+      slug, kit, origin: url.origin
+    }), {
       name: obj.customMetadata?.name || other?.customMetadata?.name || '',
       slug, kit,
       hasDemo: kit ? !!other : true,

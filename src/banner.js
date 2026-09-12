@@ -10,6 +10,44 @@
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
+// What the link looks like when somebody shares it.
+//
+// A draft travels further than the email it arrived in. Owners forward it to a
+// business partner, text it to whoever does their computer stuff, paste it into
+// a Facebook message. Without these tags every one of those arrives as a bare
+// grey web address, which is exactly the fault we wrote up about a prospect's
+// own site before shipping it ourselves on every draft we had published.
+//
+// These are deliberately not indexable: the robots header on the response still
+// says noindex, and link unfurlers ignore robots because a person asked for the
+// preview by pasting the link. So the card appears for the owner and the draft
+// stays out of search.
+export function injectHead(html, { name, slug, kit, origin }) {
+  if (/property=["']og:title["']/i.test(html)) return html;
+  const who = name || 'your business';
+  const title = kit ? `Three posts for ${who}` : `A website draft for ${who}`;
+  const desc = kit
+    ? `Three posts made for ${who}, free to keep and use. Put together by First Draft Studios.`
+    : `A free draft of a new website, built for ${who} from their own menu, hours and reviews. Nothing is live and nothing is owed.`;
+  const image = `${origin}/demo/${slug}/og.jpg`;
+  const tags = [
+    `<meta property="og:type" content="website">`,
+    `<meta property="og:title" content="${esc(title)}">`,
+    `<meta property="og:description" content="${esc(desc)}">`,
+    `<meta property="og:image" content="${esc(image)}">`,
+    `<meta property="og:image:width" content="1200">`,
+    `<meta property="og:image:height" content="630">`,
+    `<meta property="og:site_name" content="First Draft Studios">`,
+    `<meta name="twitter:card" content="summary_large_image">`,
+    `<meta name="twitter:title" content="${esc(title)}">`,
+    `<meta name="twitter:description" content="${esc(desc)}">`,
+    `<meta name="twitter:image" content="${esc(image)}">`
+  ].join('\n');
+  return /<head[^>]*>/i.test(html) ? html.replace(/<head[^>]*>/i, m => m + '\n' + tags)
+    : /<title>/i.test(html) ? html.replace(/<title>/i, tags + '\n<title>')
+    : tags + '\n' + html;
+}
+
 export function injectBanner(html, { name, slug, email, site, phone, kit, hasDemo = true, hasKit = false }) {
   const who = name ? `for ${esc(name)}` : 'for your business';
   const tel = phone ? phone.replace(/[^\d+]/g, '') : '';
