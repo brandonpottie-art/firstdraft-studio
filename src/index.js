@@ -7,6 +7,7 @@ import { handleIntake } from './intake.js';
 import { handleEnquiry } from './enquiry.js';
 import { handleTrack, recordView } from './track.js';
 import { handleInbound } from './inbound.js';
+import { handleStudio } from './studio.js';
 
 export default {
   async fetch(request, env, ctx) {
@@ -20,6 +21,8 @@ export default {
     if (url.pathname.startsWith('/t/')) return handleTrack(request, env, ctx, url);
     // Mail coming back, posted by Resend and checked against the secret.
     if (url.pathname === '/hooks/resend') return handleInbound(request, env);
+    // Which drafts are still in play, and the current prices, for the studio site.
+    if (url.pathname === '/studio.json') return handleStudio(env);
 
     // The card image the og tags point at, served before anything that would
     // add a trailing slash to it. Cached for an hour because it only changes

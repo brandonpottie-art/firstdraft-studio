@@ -13,6 +13,7 @@
 <meta property="og:description" content="We build your website first and show it to you working. You pay only if you want it finished, at one fixed price.">
 <meta property="og:url" content="https://firstdraftstudios.ca/">
 <meta property="og:type" content="website">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"First Draft Studios","url":"https://firstdraftstudios.ca/","email":"hello@firstdraftstudios.ca","description":"A small Windsor studio that builds your website first, for free, and quotes one fixed price if you want it finished.","areaServed":"Windsor-Essex, Ontario","address":{"@type":"PostalAddress","addressLocality":"Windsor","addressRegion":"ON","addressCountry":"CA"}}</script>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="description" content="First Draft Studios builds your website, app, or video first and shows it to you working. You pay only if you want it finished, at one fixed price.">
 <meta name="theme-color" content="#EEF0F7">
@@ -171,37 +172,18 @@ body.lock{overflow:hidden}
 .drafts h2{color:#fff}
 .drafts p{color:rgba(255,255,255,.7)}
 .drafts .eyebrow{color:#9EA2F2}
-.thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+.drafts .rule{font-family:var(--mono);font-size:.78rem;color:rgba(255,255,255,.5);margin-top:22px;letter-spacing:.02em}
+.thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px;align-items:start}
 .thumb{border-radius:16px;overflow:hidden;background:var(--panel-2);box-shadow:0 0 0 1px rgba(255,255,255,.08);transition:transform .3s cubic-bezier(.2,.65,.25,1)}
 .thumb:hover{transform:translateY(-6px)}
 .thumb .scr{aspect-ratio:16/10;position:relative;overflow:hidden}
 .thumb .meta{padding:16px 18px 18px;display:flex;justify-content:space-between;align-items:baseline;gap:12px}
 .thumb .meta b{font-weight:600;color:#fff}
 .thumb .meta span{font-family:var(--mono);font-size:.72rem;color:rgba(255,255,255,.55);white-space:nowrap}
-/* thumb 1: butcher */
-.t1{background:#1A0F0C;color:#F5E9DC;padding:7% 7%}
-.t1 .k{font-family:var(--display);font-weight:800;font-size:clamp(14px,2.2vw,26px);line-height:.98;letter-spacing:-.02em;color:#fff;max-width:9ch}
-.t1 .k span{color:#C4304A}
-.t1 .r{display:flex;gap:4%;margin-top:7%}
-.t1 .r i{flex:1;height:clamp(24px,4vw,46px);border-radius:8px;background:linear-gradient(135deg,#6E1B2C,#C4304A)}
-.t1 .r i:nth-child(2){background:linear-gradient(135deg,#8C3A5A,#E3A6B8)}
-.t1 .r i:nth-child(3){background:linear-gradient(135deg,#3A1220,#6E1B2C)}
-.t1 .p{position:absolute;left:7%;right:7%;bottom:8%;display:flex;justify-content:space-between;font-family:var(--mono);font-size:clamp(6px,.8vw,10px);color:rgba(245,233,220,.6);letter-spacing:.08em;text-transform:uppercase}
-/* thumb 2: barbershop */
-.t2{background:#0B0B0D;color:#EDE6D6;padding:7%}
-.t2 .k{font-family:var(--display);font-weight:800;font-size:clamp(14px,2.2vw,26px);line-height:.98;letter-spacing:-.02em;color:#EDE6D6}
-.t2 .k span{color:#D6B25E}
-.t2 .lst{margin-top:7%;font-family:var(--mono);font-size:clamp(6px,.85vw,10px);color:rgba(237,230,214,.75)}
-.t2 .lst div{display:flex;justify-content:space-between;padding:2.2% 0;border-bottom:1px solid rgba(237,230,214,.15)}
-.t2 .lst div i{font-style:normal;color:#D6B25E}
-.t2 .pole{position:absolute;right:8%;top:10%;width:8%;height:56%;border-radius:99px;background:repeating-linear-gradient(-45deg,#D6B25E 0 12%,#EDE6D6 12% 24%,#B33 24% 36%);box-shadow:0 0 0 3px #0B0B0D,0 0 0 4px rgba(237,230,214,.3)}
-/* thumb 3: dental clinic */
-.t3{background:#EAF3FF;color:#0E2A4A;padding:7%}
-.t3 .k{font-family:var(--display);font-weight:800;font-size:clamp(14px,2.2vw,26px);line-height:.98;letter-spacing:-.02em;color:#0E2A4A}
-.t3 .k span{color:#1F6FEB}
-.t3 .c{margin-top:7%;display:grid;grid-template-columns:1fr 1fr;gap:4%}
-.t3 .c i{height:clamp(30px,5vw,58px);border-radius:10px;background:#fff;box-shadow:0 4px 12px rgba(14,42,74,.1);position:relative}
-.t3 .c i::after{content:"";position:absolute;left:12%;top:30%;width:50%;height:12%;border-radius:4px;background:#1F6FEB;opacity:.85}
+.thumb .scr img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.thumb.lead{grid-column:span 2}
+.thumb .meta em{font-style:normal;color:#9EA2F2}
+div.thumb:hover{transform:none}
 .t3 .c i:nth-child(2)::after{background:#8FB6F2;width:36%}
 .t3 .btn3{position:absolute;left:7%;bottom:9%;background:#1F6FEB;color:#fff;font-size:clamp(6px,.85vw,10px);font-weight:700;padding:.7em 1.5em;border-radius:99px}
 @media(max-width:900px){.drafts{padding:70px 0}.thumbs{grid-template-columns:1fr}}
@@ -218,8 +200,8 @@ body.lock{overflow:hidden}
 /* ---------- note ---------- */
 .note{padding:40px 0 100px}
 .note .card{background:var(--card);border-radius:var(--r);box-shadow:var(--lift);padding:44px 48px;display:grid;grid-template-columns:auto 1fr;gap:34px;align-items:start}
-.note .who{width:84px;height:84px;border-radius:50%;background:var(--tang);display:grid;place-items:center}
-.note .who i{width:26px;height:26px;background:#fff;border-radius:6px;transform:rotate(45deg)}
+.note .who{width:96px;flex:none}
+.note .who img{width:96px;height:auto;display:block}
 .note .card p{font-size:1.15rem;color:var(--ink);line-height:1.6;max-width:66ch}
 .note .card p + p{margin-top:14px}
 .note .sig{margin-top:18px;font-family:var(--mono);font-size:.8rem;color:var(--mute);letter-spacing:.04em}
@@ -238,7 +220,16 @@ body.lock{overflow:hidden}
 @media(max-width:900px){.faq{padding-bottom:70px}}
 
 /* ---------- ask ---------- */
-.ask{padding:0 0 100px}
+.pricing{padding:90px 0;background:var(--tang-pale)}
+.pricing .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+.pricing .lead{font-size:1.2rem;margin-top:18px}
+.pricing .fine{font-family:var(--mono);font-size:.78rem;color:var(--mute);margin-top:22px}
+.sheet.price .ln b{font-size:1.15rem}
+.sheet.price .ln .amt{font-size:1.3rem;text-align:right}
+.sheet.price .ln .amt small{display:block;font-family:var(--body);font-size:.78rem;font-weight:500;color:var(--mute);margin-top:2px}
+.sheet.price .ln.free .amt{color:var(--tang)}
+@media(max-width:900px){.pricing{padding:70px 0}.pricing .grid{grid-template-columns:1fr;gap:28px}}
+.ask{padding:90px 0 100px}
 .ask .box{background:var(--panel);color:#fff;border-radius:28px;padding:64px 56px;position:relative;overflow:clip}
 .ask .box::before{content:"";position:absolute;right:-10%;top:-40%;width:50%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(94,99,224,.6),transparent 65%);pointer-events:none}
 .ask h2{color:#fff;position:relative}
@@ -281,6 +272,8 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
 }
 /* every tappable thing is 44px on a phone, the logo included */
 .mark{min-height:44px;display:inline-flex;align-items:center}
+@media(max-width:900px){.thumbs{grid-template-columns:1fr 1fr}.thumb.lead{grid-column:1/-1}}
+@media(max-width:560px){.thumbs{grid-template-columns:1fr}.thumb.lead{grid-column:auto}}
 </style>
 
 <header id="hdr">
@@ -289,16 +282,17 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
     <nav aria-label="Primary">
       <a href="#deal">The deal</a>
       <a href="#how">How it works</a>
-      <a href="#drafts">Drafts</a>
+      <a href="#work">Work</a>
       <a href="#build">What we build</a>
       <a href="#faq">Questions</a>
+      <a href="#pricing">Pricing</a>
     </nav>
     <a class="btn hot" href="#ask">Get a free draft</a>
     <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"><span></span><span></span><span></span></button>
   </div>
 </header>
 <div class="mnav" id="mnav">
-  <a href="#deal">The deal</a><a href="#how">How it works</a><a href="#drafts">Drafts</a><a href="#build">What we build</a><a href="#faq">Questions</a>
+  <a href="#deal">The deal</a><a href="#how">How it works</a><a href="#work">Work</a><a href="#build">What we build</a><a href="#faq">Questions</a><a href="#pricing">Pricing</a>
   <a class="btn hot" href="#ask">Get a free draft</a>
 </div>
 
@@ -377,22 +371,40 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
     <h2 class="rv" data-d="1">Three steps. You do the first one.</h2>
     <div class="row">
       <div class="step rv" data-d="1"><span class="n">STEP 1 &middot; YOU</span><h3>Tell us your business name.</h3><p>One email or a twenty-minute call. Plain language is perfect. We'll find your menu, your hours, your reviews, and your story ourselves.</p><span class="t">Takes you 30 seconds</span></div>
-      <div class="step dark rv" data-d="2"><span class="n">STEP 2 &middot; US</span><h3>We build v0 and send you a link.</h3><p>Actual pages with your real menu, prices, hours, and photos. It works on a phone. You can send it to your spouse for a second opinion.</p><span class="t">Days, not weeks</span></div>
+      <div class="step dark rv" data-d="2"><span class="n">STEP 2 &middot; US</span><h3>We build v0 and send you a link.</h3><p>Actual pages with your real menu, prices, hours, and photos, plus three social posts you keep either way. It works on a phone. You can send it to your spouse for a second opinion.</p><span class="t">Days, not weeks</span></div>
       <div class="step rv" data-d="3"><span class="n">STEP 3 &middot; YOU</span><h3>Say yes, say no, or say "closer".</h3><p>Yes means one fixed quote and we finish it. No means we part ways with nothing owed. Closer means one more free draft in a new direction.</p><span class="t">Your call, no pressure</span></div>
     </div>
   </div>
 </section>
 
-<section class="drafts" id="drafts">
+<section class="drafts" id="work">
   <div class="wrap">
-    <span class="eyebrow rv">More drafts</span>
-    <h2 class="rv" data-d="1">Built for businesses that hadn't asked yet.</h2>
-    <p class="rv" data-d="2" style="font-size:1.12rem;margin-top:14px">Each of these started the same way yours would: a business name, an afternoon, a link. No brief, no deposit, no meeting.</p>
+    <span class="eyebrow rv">Work</span>
+    <h2 class="rv" data-d="1">Built first. Asked about after.</h2>
+    <p class="rv" data-d="2" style="font-size:1.12rem;margin-top:14px">Embrace is our own app, and the site that sells it. Every other one started the way yours would: a business name, an afternoon, and a link in the owner's inbox. A draft stays here while the owner is deciding and comes down the day they say no.</p>
     <div class="thumbs">
-      <a class="thumb rv" data-d="1" href="#ask"><div class="scr t1"><div class="k">Cut to order, <span>since 1995.</span></div><div class="r"><i></i><i></i><i></i></div><div class="p"><span>Weekly cuts</span><span>Order ahead</span><span>Dominion Blvd</span></div></div><div class="meta"><b>Family butcher</b><span>draft &middot; 1 afternoon</span></div></a>
-      <a class="thumb rv" data-d="2" href="#ask"><div class="scr t2"><div class="k">Sharp cuts. <span>No waiting.</span></div><div class="lst"><div><span>Men's cut</span><i>$25</i></div><div><span>Hair &amp; beard</span><i>$40</i></div><div><span>Kids</span><i>$20</i></div><div><span>Hot towel shave</span><i>$25</i></div></div><div class="pole"></div></div><div class="meta"><b>Barbershop, Riverside</b><span>draft &middot; 1 afternoon</span></div></a>
-      <a class="thumb rv" data-d="3" href="#ask"><div class="scr t3"><div class="k">Same-day <span>emergency visits.</span></div><div class="c"><i></i><i></i><i></i><i></i></div><div class="btn3">Book online</div></div><div class="meta"><b>Dental clinic, Tecumseh</b><span>draft &middot; 1 afternoon</span></div></a>
+      <a class="thumb lead rv" data-d="1" href="https://www.embracehealthapp.com/" target="_blank" rel="noopener">
+        <div class="scr"><img src="/assets/work/embrace.jpg" alt="The Embrace website: a headline reading Your family's health, organized, beside an iPhone running the app" width="960" height="600" loading="lazy"></div>
+        <div class="meta"><b>Embrace, a family health app</b><span><em>live</em> &middot; our own product</span></div>
+      </a>
+      <div class="thumb rv" data-d="2" data-slug="roast-n-toast-family-diner">
+        <div class="scr"><img src="/assets/work/roast.jpg" alt="Draft website for Roast 'N Toast Family Diner: Sit at the counter. Order the French toast, beside a drawn stack of French toast" width="960" height="600" loading="lazy"></div>
+        <div class="meta"><b>Roast 'N Toast Family Diner</b><span>draft &middot; with the owner</span></div>
+      </div>
+      <div class="thumb rv" data-d="1" data-slug="butcher-of-kingsville">
+        <div class="scr"><img src="/assets/work/butcher.jpg" alt="Draft website for The Butcher of Kingsville: One animal. Every cut. Nothing before day 28, beside a parcel in butcher's paper" width="960" height="600" loading="lazy"></div>
+        <div class="meta"><b>The Butcher of Kingsville</b><span>draft &middot; with the owner</span></div>
+      </div>
+      <div class="thumb rv" data-d="2" data-slug="a-dogs-breakfast">
+        <div class="scr"><img src="/assets/work/dogs.jpg" alt="Draft website for A Dog's Breakfast: Eight ways to have a benny, beside a photograph of a peameal benny with home fries" width="960" height="600" loading="lazy"></div>
+        <div class="meta"><b>A Dog's Breakfast</b><span>draft &middot; with the owner</span></div>
+      </div>
+      <div class="thumb rv" data-d="3" data-slug="jims-sub-shop-restaurant">
+        <div class="scr"><img src="/assets/work/jims.jpg" alt="Draft website for Jim's Sub Shop: Voted best breakfast in Windsor. Made with hollandaise, beside a chalkboard menu" width="960" height="600" loading="lazy"></div>
+        <div class="meta"><b>Jim's Sub Shop &amp; Restaurant</b><span>draft &middot; with the owner</span></div>
+      </div>
     </div>
+    <p class="rule rv">Drafts are unlisted until the owner says yes, so they are shown here and not linked.</p>
   </div>
 </section>
 
@@ -409,7 +421,7 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
         <li><b>Email at your own domain</b><span>hello@yourbusiness.ca instead of a Gmail address on the sign.</span></li>
         <li><b>Online ordering and booking</b><span>Pickup orders, appointments, pre-orders for the holiday rush.</span></li>
         <li><b>Apps and customer portals</b><span>iOS apps and tools shaped to how your business actually runs.</span></li>
-        <li><b>Video and ads</b><span>Short clips for Facebook and Instagram, cut to keep attention.</span></li>
+        <li><b>Social posts and ads</b><span>Three posts come free with every draft. After that, a month of posts at a time, or ads run for you.</span></li>
         <li><b>Logos and brand</b><span>An identity with a point of view, made for your business alone.</span></li>
       </ul>
     </div>
@@ -419,7 +431,7 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
 <section class="note">
   <div class="wrap">
     <div class="card rv">
-      <div class="who" aria-hidden="true"><i></i></div>
+      <div class="who"><img src="/assets/fd-mark.png" alt="First Draft Studios" width="400" height="282"></div>
       <div>
         <p>We are a small studio. We have shipped apps to the App Store, built sites that people actually use, and watched too many good local businesses get quoted five figures for a website by someone who never set foot in the place.</p>
         <p>So the order is reversed. We build it first. You look at it on your phone, on your own time, and you decide with the thing in front of you. If it isn't right, we shake hands and you've lost nothing. If it is, you'll know the exact price before a dollar moves.</p>
@@ -435,11 +447,36 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
     <h2 class="rv" data-d="1">What's the catch?</h2>
     <div class="list rv" data-d="2">
       <details open><summary>Why would you work for free?<i>+</i></summary><p>We only get paid when a draft turns into a finished project, so every draft has to be good enough to sell itself. The free draft replaces the proposals, decks, and discovery invoices other shops charge you to sit through.</p></details>
-      <details><summary>What does the free draft actually include?<i>+</i></summary><p>Something real. Working pages with your menu, prices, hours, photos, and reviews already in them. Enough that you can judge it with your own eyes instead of imagining it from a document.</p></details>
+      <details><summary>What does the free draft actually include?<i>+</i></summary><p>Something real. Working pages with your menu, prices, hours, photos, and reviews already in them, plus three social posts made for you, which are yours to use whatever you decide. Enough that you can judge it with your own eyes instead of imagining it from a document.</p></details>
       <details><summary>What happens if I don't like it?<i>+</i></summary><p>Tell us. Either we take one more free swing in a different direction, or we part ways. There is no invoice, no kill fee, and no pressure. The draft stays ours; your business stays yours.</p></details>
-      <details><summary>How much does the finished version cost?<i>+</i></summary><p>It depends on the project, and you'll know the exact number before committing. Every quote is fixed and in writing. Because we run a small studio with modern tools and no account managers, the number is consistently well under agency rates for the same work.</p></details>
+      <details><summary>How much does the finished version cost?<i>+</i></summary><p>The numbers are further down this page, under Pricing. Every quote is one fixed figure in writing before we start, shaped to the job, so a site that needs less costs less. Because we run a small studio with modern tools and no account managers, the number is consistently well under agency rates for the same work.</p></details>
       <details><summary>What does it cost to keep it running?<i>+</i></summary><p>Very little. Your domain name is about $15 a year. Hosting for a site like the ones above is free. Email at your own domain can be free too. We set it all up in your name so nothing depends on us.</p></details>
       <details><summary>Am I tied into anything?<i>+</i></summary><p>No contract and no minimum term. The build is one fixed price, quoted in writing before we start. If you take a care plan afterwards it is month to month, and you can stop it whenever you like.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <span class="eyebrow rv">Pricing</span>
+        <h2 class="rv" data-d="1">Fixed, in writing, before anything starts.</h2>
+        <p class="lead rv" data-d="2">Every quote is one number, shaped to the job. These are where the numbers usually land, so you know roughly what you are looking at before we talk. A site that needs less costs less, and anything that is not on the list gets its own line in the quote.</p>
+        <p class="fine rv" data-d="2">Canadian dollars. The first draft is free whatever you decide.</p>
+      </div>
+      <div class="sheet price rv" data-d="2" aria-label="Typical prices">
+        <div class="ln free" data-item="v0 draft, three posts, personal email"><span><b>A working first draft, three social posts, and a personal note</b><small>Sent before you have paid anything.</small></span><span class="amt"><b>$0</b></span></div>
+        <div class="ln" data-item="One-page site"><span><b>One-page site</b><small>Everything on one screen: what you do, hours, phone, map.</small></span><span class="amt"><b>$900</b></span></div>
+        <div class="ln" data-item="Standard site, up to 5 pages"><span><b>Standard site, up to five pages</b><small>Menu or services, about, hours and directions, contact.</small></span><span class="amt"><b>$1,800</b></span></div>
+        <div class="ln" data-item="Plus site with ordering or booking"><span><b>Site with online ordering or booking</b><small>Pickup orders, appointments, or pre-orders for the rush.</small></span><span class="amt"><b>$2,800</b><small>from</small></span></div>
+        <div class="ln" data-item="Care plan"><span><b>Care plan</b><small>Hosting, domain, email, and the small changes through the year.</small></span><span class="amt"><b>$59</b><small>per month</small></span></div>
+        <div class="ln" data-item="Care plan with social"><span><b>Care plan with social</b><small>The care plan, plus a month of posts at a time.</small></span><span class="amt"><b>$99</b><small>per month</small></span></div>
+        <div class="ln" data-item="Social kit, one-off"><span><b>Social kit, one-off</b><small>A set of posts with captions and hashtags, ready to publish.</small></span><span class="amt"><b>$150</b></span></div>
+        <div class="ln" data-item="Ads management"><span><b>Ads, run for you</b><small>Facebook and Instagram, with the spend set by you.</small></span><span class="amt"><b>$250</b><small>per month, plus spend</small></span></div>
+        <div class="ln" data-item="Logo and brand"><span><b>Logo and brand</b><small>An identity with a point of view, made for your business alone.</small></span><span class="amt"><b>$600</b><small>from</small></span></div>
+        <div class="ln yes"><span><b>Something in between?</b><small>Tell us what the business needs and the quote is shaped to it. Nothing here is a package you have to buy whole.</small></span><span class="amt"><span>Custom</span>quoted in writing</span></div>
+      </div>
     </div>
   </div>
 </section>
@@ -587,5 +624,20 @@ footer .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-t
     });
   })();
   document.getElementById('yr').textContent=new Date().getFullYear();
+})();
+</script>
+<script>
+(function(){
+  if(!window.fetch)return;
+  fetch('/studio.json').then(function(r){return r.ok?r.json():null}).then(function(d){
+    if(!d)return;
+    /* a draft comes down the day the owner says no, or the day it is unpublished */
+    if(d.active){document.querySelectorAll('.thumb[data-slug]').forEach(function(c){if(d.active.indexOf(c.getAttribute('data-slug'))<0)c.remove()})}
+    /* the price sheet in the platform is the one source of truth for the numbers */
+    if(d.prices){d.prices.forEach(function(p){
+      var ln=document.querySelector('.sheet.price .ln[data-item="'+String(p.item||'').replace(/"/g,'')+'"]');
+      var amt=ln&&ln.querySelector('.amt b'); if(amt)amt.textContent='$'+Number(p.price||0).toLocaleString('en-CA');
+    })}
+  }).catch(function(){});
 })();
 </script>
