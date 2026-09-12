@@ -86,6 +86,44 @@ async function announceOnce(env, businessId, type, summary) {
     .bind(businessId, type, summary).run();
 }
 
+
+/* ------------------------------------------------- which email sent them */
+
+// Visits used to be tied to a message by an ?e=<token> on the link. That was
+// dropped on 2026-09-12 because a link whose destination did not match its
+// visible text, ending in a random string, is the shape of a phishing link,
+// and the careful owner who hovers first is the one worth reaching.
+//
+// So the match is made on timing instead. A visit can only have come from a
+// message already sent, and the most recent one is the obvious candidate. No
+// future email can explain a past visit, so deciding at write time is safe.
+//
+// Two honesty measures. Old links carrying a token still resolve exactly, and
+// those keep winning, because an exact answer beats a good guess. And an
+// inferred match is written into the note, so nobody reading the table later
+// mistakes arithmetic for certainty.
+const ATTRIBUTION_DAYS = 120;
+
+async function emailForVisit(env, businessId, token) {
+  if (token) {
+    const exact = await env.DB.prepare('SELECT id FROM emails WHERE track_token = ?1').bind(token).first();
+    if (exact) return { id: exact.id, inferred: false };
+  }
+  if (!businessId) return { id: null, inferred: false };
+  const recent = await env.DB.prepare(
+    `SELECT id FROM emails
+      WHERE business_id = ?1 AND status = 'sent' AND sent_at IS NOT NULL
+        AND sent_at <= datetime('now')
+        AND sent_at >= datetime('now', ?2)
+      ORDER BY sent_at DESC, id DESC LIMIT 1`
+  ).bind(businessId, `-${ATTRIBUTION_DAYS} days`).first();
+  return recent ? { id: recent.id, inferred: true } : { id: null, inferred: false };
+}
+
+// Keeps whatever the caller wanted to say and adds the caveat.
+const withMatchNote = (note, inferred) =>
+  inferred ? [note, 'email matched by send time'].filter(Boolean).join(' · ').slice(0, 120) : (note ?? null);
+
 /* -------------------------------------------------------- page views */
 
 // Called for every demo and kit page the Worker serves. Runs after the
@@ -103,14 +141,13 @@ export function recordView(env, ctx, request, url, { slug, page }) {
     try {
       const biz = await env.DB.prepare('SELECT id, name FROM businesses WHERE slug = ?1').bind(slug).first();
       if (!biz) return;
-      const email = token
-        ? await env.DB.prepare('SELECT id FROM emails WHERE track_token = ?1').bind(token).first()
-        : null;
+      const email = await emailForVisit(env, biz.id, token);
       const bot = BOT.test(ua) || !ua;
       await write(env, {
-        business_id: biz.id, email_id: email ? email.id : null, kind: 'view', page, slug, visitor,
+        business_id: biz.id, email_id: email.id, kind: 'view', page, slug, visitor,
         referrer: request.headers.get('referer') || '', ua,
-        country: request.cf && request.cf.country, who: fromUs ? 'us' : 'them', bot
+        country: request.cf && request.cf.country, who: fromUs ? 'us' : 'them', bot,
+        note: withMatchNote(null, email.inferred)
       });
       if (!fromUs && !bot) {
         await announceOnce(env, biz.id, 'opened_page',
@@ -193,22 +230,20 @@ async function recordRead(b, request, env) {
   const ua = request.headers.get('user-agent') || '';
   const biz = await env.DB.prepare('SELECT id FROM businesses WHERE slug = ?1').bind(slug).first();
   if (!biz) return;
-  const email = cookies.fd_e
-    ? await env.DB.prepare('SELECT id FROM emails WHERE track_token = ?1').bind(cookies.fd_e).first()
-    : null;
+  const email = await emailForVisit(env, biz.id, cookies.fd_e);
 
   const seconds = Math.max(0, Math.min(3600, Math.round(Number(b.seconds) || 0)));
   const depth = Math.max(0, Math.min(100, Math.round(Number(b.depth) || 0)));
   const who = cookies.fd_us === '1' ? 'us' : 'them';
 
   await write(env, {
-    business_id: biz.id, email_id: email ? email.id : null,
+    business_id: biz.id, email_id: email.id,
     kind: b.kind === 'click' ? 'click' : 'read',
     page: b.page === 'kit' ? 'kit' : 'demo', slug,
     visitor: await visitorId(request, cookies, env),
     seconds, depth, ua, country: request.cf && request.cf.country,
     who, bot: BOT.test(ua) || !ua,
-    note: b.what ? String(b.what).slice(0, 120) : null
+    note: withMatchNote(b.what ? String(b.what).slice(0, 120) : null, email.inferred)
   });
 
   if (who === 'them' && !BOT.test(ua) && seconds >= 20) {
